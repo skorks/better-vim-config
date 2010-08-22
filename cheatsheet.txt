@@ -1,0 +1,5 @@
+,Enter - stop highlighting search results
+,u - reload Minibufferexplorer window
+,ss - switch on spellchecking
+,t - launch fuzzy finder in current directory
+,q - open a scratch buffer for scribbling
