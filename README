@@ -1,41 +1,80 @@
-potential plugins to look at
-java_getset or something similar
-java organise imports plugin or similar
-java shell plugin (beanshell) for quick experiments
-python.vim for python
-look at python_editing.vim for automatic folding and execute script binding
-find plugin to do automtic ruby, java and c folding
-javacomplete to enable omni completion for java
-c.vim plugin for c development
-mru.vim (most recently used documents plugin, have a look at this one)
-scratch.vim - create and use a vim scratch buffer - may already have this one in current config
-zoomwin plugin - to maximize and restore windows
+My current Vim config that works both on linux and on windows (to a greater or lesser extent), there are a lot of convenience mappings to make life easier as well as a whole bunch of plugins to make Vim not only a great general editor but a pretty powerful programming IDE (or reasonable fascimile). Quite a few of the convenience mappings I borrowed from amix - http://amix.dk/vim/vimrc.html (to give credit where credit is due, it's more than just a few, probably 70% or more of my vimrc, I borrowed from his - long live open source :)).
 
+Installing it
+-----------------------
+On linux it is pretty easy:
 
-need configurations for java, ruby, python, c and ability to easily switch between them, need to be able to easily add new configurations (javscript, clojure etc)
-tabs should not be replaced by spaces, but should set how many spaces a tab should be 
+- create a new directory in your home directory
+- check out the configuration into there (git://github.com/skorks/better-vim-config.git)
+- then simply execute the install.sh script that you will find in there
 
+The script will do a couple of things that you need to be aware of:
 
-stuff to do for new configuration
-mod installer so that it only works for linux, will never work for windows anyway, don't use mac
-ook at vim :make and :set makeprg=mvn and allow this to be different for all the configurations
-a way to view ruby, python, java documentation directly from the editor
-ability to quickly execute script, python, ruby though key combination to see the errors quickly
-ability to compile currently edited java file either with keystroke or automatically
-look at vim autocmd to automatically run commands when certain types of files are edited
-java tips for vim : http://blog.vinceliu.com/2007/08/vim-tips-for-java-1-build-java-files.html
-way to run just the corresponding unit test for current java file(relies on autocompile or easy compilation in general)
-how to do vim config overrides just for the current directory
-http://articles.techrepublic.com.com/5100-10878_11-5054618.html
-try and do some vim code/plugins to implement some basic java refactorings for vim (as an interesting side project, learn the vim programming language as well)
-http://www.thegeekstuff.com/tag/vi-vim-tips-and-tricks/
-http://superuser.com/questions/147069/vim-plugin-creation-tutorial - a quick overview of vim plugins
-http://www.swaroopch.com/notes/Vim_en:Table_of_Contents - some stuff about scripting here as well as other good info
-figure out if snipmate is working properly on linux, not too much of an issue if not working on windows
+- it will create a .vimrc file in your home directory, which will wipe out any existing one if you already have one, so make sure to backup if you don't want it wiped out (automatic backup is on my list of things to do)
+- it will rename the directory where the install script lives to be called .vimruntime if it is not already named that, this is to make sure all paths function correctly
+- so after the install script has completed you should have:
+  - a brand new .vimrc in your home directory (which points at a .vimruntime directory also in your home dir)
+  - a .vimruntime directory where all the plugins and the real config live
 
+Included Plugins
+-----------------------
+Quite a few plugins are included, all useful in my opinion especially if you want to use Vim as a programmers editor, here is a list:
 
+- pathogen
+- bufexplorer
+- minibufexpl
+- autoclose
+- autocomplpop
+- fuzzyfinder
+- matchit
+- rubymatchit
+- nerdcommenter
+- nerdtree
+- peaksea (colorscheme)
+- sessionman
+- showmarks
+- snipmate
+- surround
+- taglist
+- yankring
+- vimhaml
+- javacomplete
 
-need an installer, for linux it will create a .vimrc file if one doesn't already exit and also create a .vimruntime directory where plugins and so forth as well as the real config will live
-for windows if will create a _vimrc file and a _vimruntime directory
+The Colorscheme
+-----------------------
+There is a Colorscheme which is automatically included with the config (peaksea), this is selected by default, if you don't like it, you can:
 
-will need programming language specific configurations figure out how to detect this automatically based on type of file as well as how to set it up manually as well as platform specific via the mysys function
+- find one you do like and use that one
+- comment out the Colorscheme config completely
+
+Cheatsheet
+-----------------------
+There is a cheatsheet.txt file in the config, it contains a whole bunch of vim commands, that I put together while I was learning vim. The commands are a mix, from the very basic ones, to some reasonably advanced ones. Also included are some commands that are provided either by the plugins that are installed, or are convenience shortcuts that are mapped in the vimrc file. Making the commands in the cheatsheet second nature will take you well on your way to being an advanced Vim user. 
+
+TODO
+-----------------------
+- make the cheatsheet look a bit nicer and easier to understand
+- a quick word about what all the plugins actually do and how they are installed and which ones have quirks on windows or linux
+- explain how to change Colorscheme, or get rid of it all together
+- backup existing .vimrc during linux install
+- create a batch file installer for windows (will create a _vimrc file and a _vimruntime directory)
+- would be interesting to see how far you can take vim as a java IDE, to that end need to pull in a few existing plugins:
+  - organise imports 
+  - generate getters and setters
+  - omnicompletion is already pulled in, need to make sure it works properly
+  - java beanshell plugin also sounds like it would be useful (for experimentation)
+- currently the indenting is set up in a hardcoded fashion, i.e. will work for ruby files but will need to manually configure for other file types, need a way to automatically change indentation and possibly other options based on file type (look at autocmd to call a function when a specific file type is opened)
+  - as a start would be good to have one for ruby (as per what we have now), python, c, java (allow easy way to add others, e.g. clojure, javascript)
+- plugins to look at:
+  - c.vim for c editing
+  - python.vim - for python editing
+  - find some plugins to automate folding in ruby, python, c, java
+  - scratch.vim to give ability to create a scratch buffer
+  - mru.vim for most recently used docs
+  - zoomwin.vim to be able to fullsize any window
+- look at executing scripts directly from within vim look at vim :make and :set makeprg=mvn, this would be interesting to work out for java as well (this would be part of the per filetype configuration)
+- ability to look at ruby, python, java doco directly from vim
+- in java land there is room to potentially write some interesting plugins (i.e. run corresponding unit test, autocompile file to see errors, support for various refactorgins)
+  http://www.thegeekstuff.com/tag/vi-vim-tips-and-tricks/
+  http://superuser.com/questions/147069/vim-plugin-creation-tutorial - a quick overview of vim plugins
+  http://www.swaroopch.com/notes/Vim_en:Table_of_Contents - some stuff about scripting here as well as other good info
