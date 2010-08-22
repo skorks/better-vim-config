@@ -1,5 +1,211 @@
+*******************************
+VIM Cheatsheet
+*******************************
+
+Movement commands
+----------------------
+h,j,k,l - left, down, up, right
+$, - - go to end of line
+^, 0 - go to start of line
+gg,G -start, end of file
+H,M,L - cursor to top, middle, bottom of screen
+:5, 5G - go to line 5
+w,b,e,ge - next word start, previous word start, next word end, previous word end
+(,),{,} - next, previous sentence, next, previous paragraph
+n| - nth column of current line
+% - jump ot matching bracket (),{},[]
+<ctrl-e>, <ctrl-y> - scroll up, down
+<ctrl-f>, <ctrl-b> - move up, down one screen at a time
+mc - mark current position where c is [a..Z]
+`c, 'c - go to mark
+`., '. - last edited line
+:marks - print all marks
+:jumps - print all jumps
+n<ctrl-o> - go to nth older position in jump list, scroll forward through jump list
+n<ctrl-i> - go to nth newer position in jump list, scroll backward through jump list
+g;,g, - jump backwards and forwards through the changelist
+f,t,F,T - move forward to,before a specified character, move backward to,before a specified character(; or , - repeat the command forward or backward)
+
+Insert commands
+-------------------------
+i,I - insert, start of line
+a,A,ea - append, end of line, end of word
+o,O - blank line below, blank line above
+esc, ctrl-[, ctrl-c - exit from insert mode
+r - replace a single character (does not use insert mode)
+J - join line below to the current one (pur number before to join several lines)
+s - delete character and substitute text (add number in front to delete x characters)
+cw,cc - replace word, line C - rewrite to end of line
+x,X - delete character right, left
+dw,dd - delete word, line (cut)
+yw, yy - copy word, line (number in front for multiple) (copy)
+p,P - paste after, before
+:x,yd - delete lines x through y
+"ayy, "ap - copy line into register a, paste
+~,g~m - switch case of char, movement command
+gum, gUm - lowercase, uppercase text of movement command
+ctrl-w - backspace over a word while in insert mode
+ctrl-o - enter normal mode for one command while in insert mode
+ctrl-u - delete to beginning of indent while in insert mode
+ctrl-x ctrl-l - line completion while in insert mode
+ctrl-y - copy letter above the cursor
+ctrl-e - copy letter below the cursor
+ctrl-x ctrl-o - omnicompletion
+ctrl-r" - paste from default register in insert mode (probably can substitute the " to any other register to paste from that one)
+
+Search/replace commands
+---------------------------
+/,? - search forward, backward
+n,N - repeat search in same direction, opposite direction
+:%s/old/new/g - replace old with new in file
+:%s/old/new/gc - replace old with new in file with confirmation
+*, # - search for next instance of word under cursor, previous instance
+
+Buffers And Split Windows
+---------------------------
+:e file - open file in new buffer
+:bn, :bp, :b3, :bd - next buffer, previous buffer, buffer number 3, close buffer/file
+:sb3 - buffer number 3 split window horizontally
+:split - split current window
+:new file - open new file in split window
+<ctrl+ws> - Split windows
+<ctrl+wv> - Split windows vertically
+<ctrl-w>q - close currently selected split window
+<ctrl-w>_ - maximize current window
+<ctrl-h,j,k,l> - move between split windows
+
+Visual mode commands
+--------------------------
+v,V,Ctrl-v - visual mode, linewise, block visual mode, mark lines then do command (such as yank or delete)
+o, O - move to other end of marked area, corner of block
+esc - exit visual mode
+aw,abb - mark word,umark word
+gv - restore previous selection
+
+Macros
+----------------------
+qc, q - record macro to register where c is [a..Z], stop recording
+@c, 5@c - execute macro in register c, do it 5 times
+@@ - repeate previous @ command
+
+Useful commands
+----------------------------
+<ctrl-p>, <ctrl-n> - complete word based on words in buffer
+u, <ctrl-r> - undo,redo
+. - repeat last command
+:r file, :r! command - read file and insert after current line, exeute command and insert output below cursor
+:w filename - save to filename
+:sh - go back to shell, Ctrl-D to go back to vi
+!!pwd - execute pwd and insert output in file
+ctrl-a, ctrl-x - increment decrement number under cursor, next number on line
+"+yy, gg"+yG - copy line to system clipboard, copy whole file
+:w !sudo tee % - save the file even though opened in readonly mode without sudo
+:'a,'b !sort - sort lines between mark a and b 
+:%sort, :%sort!, :%sort u- sort whole file, in reverse, unique the lines
+V= - format visual selection
+gg=G,mzgg=G'z<CR> - format whole file, source code, format whole file and go back to where you were before
+== - indent line
+:wa, :xa - save all buffers, save and close all buffers
+:%y+ - copy entire file into clipboard
+q:, q/ - open command line history window, search hostpry window, can edit history commands and re-execute them (Ctrl-c twice to close window without executing anything)
+:grep -r CitySearch . --include=*.rb --include=*.log - recursively search for citysearch in the current directories only include .rb and .log files
+:cn, :cp, :clist - go to next match, go to previous match, list all matches
+:Vex, :Sex - browse file system in split window and take action on file (e.g. open a file)
 ,Enter - stop highlighting search results
 ,u - reload Minibufferexplorer window
 ,ss - switch on spellchecking
 ,t - launch fuzzy finder in current directory
 ,q - open a scratch buffer for scribbling
+
+
+Operators and Motions
+------------------------------------
+d,c,y - delete, change, yank operators
+iw, aw - exclusive and inclusive motion on a word
+yi" - yank everything between matching "
+ya[ - yank everything between and including matching [
+dis, dip - delete inner sentence, paragraph
+yit - yank everything between matching html tags
+
+Spellchecking
+------------------------------------
+,ss - toggle spellchecking
+zg - add word to good words list
+]s - next misspelt word
+[s - previous misspelt word
+
+Ctags stuff
+------------------------------------
+ctrl-] - go to tag under cursor
+ctrl-t - go back to where you were after having jumped to tag
+
+Abbreviations
+----------------------------------
+:ab, :iab - create abbreviation, works for insert mode only (e.g. :ab blah hello)
+:una abbrv - delete the abbreviation named abbrv
+:abc - delete all abbreviations
+
+
+********************************************
+Plugin command reference
+********************************************
+
+Yankring
+--------------------------------
+<C-p>,<C-n> - move forwards and backwards throught the yankring
+:YRShow - show the contents of the yankring
+
+Surround plugin
+-------------------------------------
+ds, cs, ys - delte, change add a surrounding everything else is similar to how motions work
+yss - add surrounding to whole line
+yS - add surround plus place on new line and indent
+ySS - add surround to whole line, place on new line and indent
+s, S - add surround in visual mode
+ysiwt<html> - add the html tag around the word/motion
+
+NERDTree command reference
+--------------------------------
+o - open in previous window
+i,s - open split, vsplit
+gi,gs - preview split, vsplit
+O - recursively open node
+x, X - close parent of node, recursively close all children 
+p,P - go to parent, go to root
+cd - change working dir to the selected dit
+C - change tree root to selected dir
+u, U - move tree root up a dir, but leave the old root open
+r, R - refresh cursor dir, refresh root
+I - hidden files toggle
+m - bring up menu for file system operations
+
+FuzzyFinder
+---------------------------------
+'t - file finder
+
+Showmarks
+--------------------------------
+,mt  - Toggles ShowMarks on and off.
+,mo  - Turns ShowMarks on, and displays
+,mh  - Clears a mark.
+,ma  - Clears all marks.
+,mm  - Places the next available mark.
+
+Taglist
+---------------------------------
+p - preview current tag (don't jump the cursor to editor window)
+tab, backspace - jump through the various open files
+u - refresh tags for file
+-,+,*,= - close fold, open fold, open all folds, close all folds
+s - sort tags in different ways
+x - maximize or minimize tag window
+
+Commenting (Nerd commenter)
+----------------------------------
+,c<space> - toggle commented state of lines (prepend with number for multiple lines, or visual select)
+,ci - toggle commented state of lines individually, any commented line is uncommented and vice versa
+,cy - yank and comment line
+,c$ - comment from cursor to end of line
+,cA - add comment at the end of the line and go into insert mode
+,cb - aling the comments
+,cu - uncomment selected lines

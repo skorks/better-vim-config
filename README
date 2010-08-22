@@ -1,0 +1,41 @@
+potential plugins to look at
+java_getset or something similar
+java organise imports plugin or similar
+java shell plugin (beanshell) for quick experiments
+python.vim for python
+look at python_editing.vim for automatic folding and execute script binding
+find plugin to do automtic ruby, java and c folding
+javacomplete to enable omni completion for java
+c.vim plugin for c development
+mru.vim (most recently used documents plugin, have a look at this one)
+scratch.vim - create and use a vim scratch buffer - may already have this one in current config
+zoomwin plugin - to maximize and restore windows
+
+
+need configurations for java, ruby, python, c and ability to easily switch between them, need to be able to easily add new configurations (javscript, clojure etc)
+tabs should not be replaced by spaces, but should set how many spaces a tab should be 
+
+
+stuff to do for new configuration
+mod installer so that it only works for linux, will never work for windows anyway, don't use mac
+ook at vim :make and :set makeprg=mvn and allow this to be different for all the configurations
+a way to view ruby, python, java documentation directly from the editor
+ability to quickly execute script, python, ruby though key combination to see the errors quickly
+ability to compile currently edited java file either with keystroke or automatically
+look at vim autocmd to automatically run commands when certain types of files are edited
+java tips for vim : http://blog.vinceliu.com/2007/08/vim-tips-for-java-1-build-java-files.html
+way to run just the corresponding unit test for current java file(relies on autocompile or easy compilation in general)
+how to do vim config overrides just for the current directory
+http://articles.techrepublic.com.com/5100-10878_11-5054618.html
+try and do some vim code/plugins to implement some basic java refactorings for vim (as an interesting side project, learn the vim programming language as well)
+http://www.thegeekstuff.com/tag/vi-vim-tips-and-tricks/
+http://superuser.com/questions/147069/vim-plugin-creation-tutorial - a quick overview of vim plugins
+http://www.swaroopch.com/notes/Vim_en:Table_of_Contents - some stuff about scripting here as well as other good info
+figure out if snipmate is working properly on linux, not too much of an issue if not working on windows
+
+
+
+need an installer, for linux it will create a .vimrc file if one doesn't already exit and also create a .vimruntime directory where plugins and so forth as well as the real config will live
+for windows if will create a _vimrc file and a _vimruntime directory
+
+will need programming language specific configurations figure out how to detect this automatically based on type of file as well as how to set it up manually as well as platform specific via the mysys function
