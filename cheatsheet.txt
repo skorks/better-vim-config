@@ -116,6 +116,7 @@ q:, q/ - open command line history window, search hostpry window, can edit histo
 ,ss - switch on spellchecking
 ,t - launch fuzzy finder in current directory
 ,q - open a scratch buffer for scribbling
+,nf - open current selected file in NERDTree
 
 
 Operators and Motions
@@ -209,3 +210,7 @@ Commenting (Nerd commenter)
 ,cA - add comment at the end of the line and go into insert mode
 ,cb - aling the comments
 ,cu - uncomment selected lines
+
+ZoomWin
+-------------------------------------
+Ctrl-w o - maximize current window, or unmaximize to restore previous window configuration

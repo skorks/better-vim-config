@@ -210,6 +210,9 @@ if MySys() == "linux"
   :set complete-=k complete+=k
 endif
 
+map <leader>mb 20<C-W>>
+map <leader>ms 20<C-W><
+
 """"""""""""""""""""""""""""""
 " Statusline
 """"""""""""""""""""""""""""""
@@ -357,6 +360,7 @@ autocmd BufWrite *.py :call DeleteTrailingWS()
 " NERDTree 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <F2> :NERDTreeToggle<CR>
+map <leader>nf :NERDTreeFind<CR>
 
 """"""""""""""""""""""""""""""""""
 " Minibufferexplorer 
