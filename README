@@ -4,9 +4,12 @@ Installing it
 -----------------------
 On linux it is pretty easy:
 
-- create a new directory in your home directory
-- check out the configuration into there (git://github.com/skorks/better-vim-config.git)
+- check out from github into a directory in your home directory:
+>cd ~
+>git clone git://github.com/skorks/better-vim-config.git blah
+
 - then simply execute the install.sh script that you will find in there
+>blah/install.sh
 
 The script will do a couple of things that you need to be aware of:
 
@@ -14,7 +17,8 @@ The script will do a couple of things that you need to be aware of:
 - it will rename the directory where the install script lives to be called .vimruntime if it is not already named that, this is to make sure all paths function correctly
 - so after the install script has completed you should have:
   - a brand new .vimrc in your home directory (which points at a .vimruntime directory also in your home dir)
-  - a .vimruntime directory where all the plugins and the real config live
+  - a .vimruntime directory where all the plugins and the real config live (what you checked out from github)
+
 
 Included Plugins
 -----------------------
