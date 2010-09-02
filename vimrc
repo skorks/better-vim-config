@@ -17,6 +17,19 @@ filetype plugin on
 filetype indent on
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Omni complete functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType python set omnifunc=pythoncomplete#Complete
+autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
+autocmd FileType css set omnifunc=csscomplete#CompleteCSS
+autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+autocmd FileType c set omnifunc=ccomplete#Complete
+autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
+autocmd Filetype java set omnifunc=javacomplete#Complete 
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General config options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -142,6 +155,12 @@ set smartindent
 set cindent
 set autoindent "Auto indent
 set wrap "Wrap lines
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" filetype indents etc
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+autocmd FileType c,cpp,javascript,xml,xhtml,html set shiftwidth=2 softtabstop=2
+autocmd FileType java,python set shiftwidth=4 softtabstop=4
 
 """"""""""""""""""""""""""""""
 " Convenience options
@@ -330,10 +349,6 @@ if MySys() == "linux"
   set grepprg=/bin/grep\ -nH
 endif
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Omni complete functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => MISC
