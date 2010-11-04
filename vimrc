@@ -3,7 +3,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 filetype off "force the filetype detection to be off so that no confusion for pathogen.vim config
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " pathogen.vim configuration so all plugins can have a separate directory of their own
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 call pathogen#runtime_append_all_bundles() 
@@ -41,20 +41,21 @@ set number "line numbers
 let mapleader = ","
 let g:mapleader = ","
 
-" fast saving (for some reason can't put this comment on the same live as the
+" fast saving (for some reason can't put this comment on the same line as the
 " command, causes trouble)
 nmap <leader>w :w!<cr> 
 
-" Fast editing of the .vimrc
+" Fast editing of the .vimrc and cheetsheet
 if MySys() == "windows"
   map <leader>e :e! ~\_vimruntime\vimrc<cr>
   autocmd! bufwritepost vimrc source ~\_vimruntime\vimrc "when vimrc is edited, reload it
 elseif MySys() == "linux"
   map <leader>e :e! ~/.vimruntime/vimrc<cr>
   autocmd! bufwritepost vimrc source ~/.vimruntime/vimrc "when vimrc is edited, reload it
+  map <leader>c :e! ~/.vimruntime/cheatsheet.txt<cr>
 endif
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set up color scheme, fonts, encoding and file formats
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 "peaksea color scheme configuration

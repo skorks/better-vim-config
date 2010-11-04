@@ -561,6 +561,8 @@ function s:SetUpForNewFiletype(filetype, forceReset)
         call s:MapDelimiters('#','')
     elseif a:filetype ==? "robots"
         call s:MapDelimiters('#', '')
+    elseif a:filetype ==? "ruby"
+        call s:MapDelimiters('#', '')
     elseif a:filetype ==? "sa"
         call s:MapDelimiters('--','')
     elseif a:filetype ==? "samba"
