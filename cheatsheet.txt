@@ -1,10 +1,10 @@
 *******************************
 VIM Cheatsheet
-*******************************
+********************************
 
 Movement commands
 ----------------------
-h,j,k,l - left, down, up, right
+h,j,k,l - left, down, up, right 
 $, - - go to end of line
 ^, 0 - go to start of line
 gg,G -start, end of file
@@ -27,7 +27,7 @@ g;,g, - jump backwards and forwards through the changelist
 f,t,F,T - move forward to,before a specified character, move backward to,before a specified character(; or , - repeat the command forward or backward)
 
 Insert commands
--------------------------
+--------------------------
 i,I - insert, start of line
 a,A,ea - append, end of line, end of word
 o,O - blank line below, blank line above
