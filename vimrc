@@ -18,11 +18,6 @@ filetype indent on
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Unknown file types 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-autocmd BufRead,BufNewFile Gemfile set filetype=ruby
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => Omni complete functions
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 autocmd FileType python set omnifunc=pythoncomplete#Complete
