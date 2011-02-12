@@ -369,6 +369,25 @@ func! DeleteTrailingWS()
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 
+" Alternatives to ESC: *******************************************************
+imap jkl <ESC>:w<cr>
+imap jlk <ESC>:w<cr>
+imap kjl <ESC>:w<cr>
+imap klj <ESC>:w<cr>
+imap lkj <ESC>:w<cr>
+imap ljk <ESC>:w<cr>
+imap ;l <ESC>:w<cr>
+
+"define :Lorem command to dump in a paragraph of lorem ipsum
+command! -nargs=0 Lorem :normal iLorem ipsum dolor sit amet, consectetur
+      \ adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
+      \ magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+      \ ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+      \ irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
+      \ fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+      \ proident, sunt in culpa qui officia deserunt mollit anim id est
+      \ laborum
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Plugin configs
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -440,3 +459,9 @@ let g:acp_behaviorSnipmateLength = 1
 if MySys() == "linux"
   map <F8> :!/usr/bin/ctags -R .<CR>
 endif
+
+" Fix supertab/endwise incompatibility
+let g:SuperTabCrMapping = 0
+
+" Conque Shell
+let g:ConqueTerm_ReadUnfocused = 1
