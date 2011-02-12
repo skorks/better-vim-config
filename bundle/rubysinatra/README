@@ -1,0 +1,16 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2942
+
+Vim support for syntax highlight and snippets that helper coding
+applications based in Ruby/Sinatra micro-framework.
+
+The snippets are written with base the SnipMate #2540 plugin.
+
+You maybe contributes to source. So, send a feedback in issue tracker (http://github.com/hallison/vim-ruby-sinatra/issues).
+
+Vim-Ruby/Sinatra is hosted on following servers:
+
+-- Github (http://github.com/hallison/vim-ruby-sinatra)
+-- Codaset (http://codaset.com/hallison/vim-ruby-sinatra/issues)
+
+Copyright (C) 2010 Hallison Batista <email@hallisonbatista.com>
+

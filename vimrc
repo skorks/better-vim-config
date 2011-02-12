@@ -43,7 +43,7 @@ let g:mapleader = ","
 
 " fast saving (for some reason can't put this comment on the same line as the
 " command, causes trouble)
-nmap <leader>w :w!<cr> 
+" nmap <leader>w :w!<cr> 
 
 " Fast editing of the .vimrc and cheetsheet
 if MySys() == "windows"
@@ -60,7 +60,7 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 "peaksea color scheme configuration
 if has("gui_running")
-  "set guioptions-=T "no toolbar
+  set guioptions-=T "no toolbar
   "set background=dark
   "set t_Co=256
   "colorscheme peaksea
@@ -149,7 +149,7 @@ set smarttab
 ":set softtabstop=4 shiftwidth=4 expandtab - for python code for example
 
 set linebreak
-set textwidth=1000
+set textwidth=5000
 
 "automatically indent
 set smartindent
@@ -170,7 +170,7 @@ map 0 ^
 map - $
 map ' `
 
-" Map space to / (search) and c-space to ? (backgwards search)
+" no highlighting 
 map <silent> <leader><cr> :noh<cr>
 
 " Scroll faster
@@ -230,6 +230,7 @@ if MySys() == "linux"
   :set complete-=k complete+=k
 endif
 
+" make a window bigger of smaller
 map <leader>mb 20<C-W>>
 map <leader>ms 20<C-W><
 
@@ -404,11 +405,11 @@ let g:bufExplorerShowRelativePath=1
 """"""""""""""""""""""""""""""
 " Fuzzy finder
 """"""""""""""""""""""""""""""
-try
-    call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
-    map <leader>t :FufCWD **/<CR>
-catch
-endtry
+"try
+    "call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
+    "map <leader>t :FufCWD **/<CR>
+"catch
+"endtry
 
 """"""""""""""""""""""""""""""
 " Session manager 

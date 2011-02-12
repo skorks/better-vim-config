@@ -1,0 +1,3 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=403
+
+This script properly highlights <% ... %>, <%=...%>, and <%#...%> as ruby code within html.

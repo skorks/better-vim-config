@@ -1,0 +1,17 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=1497
+
+  Map keys ')' and ']' to perform automatic formatting of parentheses content, i. e., insert spaces in all proper positions.
+   Currently spaces are inserted:
+   a)After and before '(', ')', '[', ']', '+', '-', '*', '/', '%', '=', '&', '|', '^'
+   b)After and before '==', '+=', '-=', '*=', '%=', '/=', '|=', '&=', '!=','^=', '<<', '>>', '>=', '<=', '&&', '||' (and never in the middle!)
+   c)Only after (and not before) ',', '++', '--'
+
+   If syntax highlighting is enabled, script correctly handles string literals, i.e, do not change their content.
+
+   If you have nested parentheses, their content will not be formatted. It is implied that the source is edited continuously, so content of each pair of pare
+   ntheses is formatted after closing parenthesis is printed.
+
+   Bugs:
+   a) Unary '*', '&' and '-' are not handled correctly(i. e., spaces are inserted before and after no matter of context)
+   b) Final position of cursor is not always proper
+
