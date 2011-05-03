@@ -61,15 +61,10 @@ endif
 "peaksea color scheme configuration
 if has("gui_running")
   set guioptions-=T "no toolbar
-  "set background=dark
-  "set t_Co=256
-  "colorscheme peaksea
+  set background=dark
+  colorscheme solarized
 else
-  "set background=dark
-  "set t_Co=256
-  "colorscheme peaksea
-  "set background=dark
-  "colorscheme zellner
+  set background=dark
 endif
 
 " Set font according to system

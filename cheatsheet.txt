@@ -81,6 +81,10 @@ o, O - move to other end of marked area, corner of block
 esc - exit visual mode
 aw,abb - mark word,umark word
 gv - restore previous selection
+i" - selects the contents of quotes.
+i( - select the contents of parens.
+i[ - selects the contents of square brackets.
+i{ - selects the contents of curly brackets.
 
 Macros
 ----------------------
@@ -119,7 +123,7 @@ q:, q/ - open command line history window, search hostpry window, can edit histo
 ,nf - open current selected file in NERDTree
 
 
-Operators and Motions
+Operators and Motions and Text Objecs
 ------------------------------------
 d,c,y - delete, change, yank operators
 iw, aw - exclusive and inclusive motion on a word
@@ -145,6 +149,18 @@ Abbreviations
 :ab, :iab - create abbreviation, works for insert mode only (e.g. :ab blah hello)
 :una abbrv - delete the abbreviation named abbrv
 :abc - delete all abbreviations
+
+Folding
+----------------------------------
+zfnj - creates a fold from the cursor down n lines.
+zo - opens a fold on the cursor.
+zc - closes a fold on the cursor.
+zj - moves the cursor to the next fold.
+zk - moves the cursor to the previous fold.
+zd - deletes the fold at the cursor.
+zE - deletes all folds in the document.
+zM - closes all open folds.
+zR - opens all folds.
 
 
 ********************************************
@@ -180,7 +196,7 @@ r, R - refresh cursor dir, refresh root
 I - hidden files toggle
 m - bring up menu for file system operations
 
-FuzzyFinder
+FuzzyFinder/Commnd T
 ---------------------------------
 't - file finder
 
