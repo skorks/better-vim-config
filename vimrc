@@ -49,7 +49,7 @@ let g:mapleader = ","
 if MySys() == "windows"
   map <leader>e :e! ~\_vimruntime\vimrc<cr>
   autocmd! bufwritepost vimrc source ~\_vimruntime\vimrc "when vimrc is edited, reload it
-elseif MySys() == "linux"
+elseif MySys() == "linux" || MySys() == "mac"
   map <leader>e :e! ~/.vimruntime/vimrc<cr>
   autocmd! bufwritepost vimrc source ~/.vimruntime/vimrc "when vimrc is edited, reload it
   map <leader>c :e! ~/.vimruntime/cheatsheet.txt<cr>
@@ -58,10 +58,10 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Set up color scheme, fonts, encoding and file formats
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
-"peaksea color scheme configuration
 if has("gui_running")
   set guioptions-=T "no toolbar
   set background=dark
+  set gfn=Monaco:h15
   colorscheme solarized
 else
   set background=dark
@@ -70,6 +70,9 @@ endif
 " Set font according to system
 if MySys() == "mac"
   set gfn=Bitstream\ Vera\ Sans\ Mono:h13
+  if has("gui_running")
+    set gfn=Monaco:h15
+  endif
   set shell=/bin/bash
 elseif MySys() == "windows"
   set gfn=Consolas:h11
