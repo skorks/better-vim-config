@@ -29,6 +29,7 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 autocmd Filetype java set omnifunc=javacomplete#Complete 
+autocmd BufNewFile,BufRead *.html.erb set filetype=html.eruby
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""
 " General config options
@@ -69,7 +70,7 @@ endif
 
 " Set font according to system
 if MySys() == "mac"
-  set gfn=Bitstream\ Vera\ Sans\ Mono:h13
+  set gfn=Monaco:h13
   if has("gui_running")
     set gfn=Monaco:h15
   endif
@@ -184,8 +185,8 @@ map <leader>bd :Bclose<cr>
 map <leader>ba :1,300 bd!<cr>
 
 " Use the arrows to something useful
-map <right> :bn<cr>
-map <left> :bp<cr>
+"map <right> :bn<cr>
+"map <left> :bp<cr>
 
 " When pressing <leader>cd switch to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>
