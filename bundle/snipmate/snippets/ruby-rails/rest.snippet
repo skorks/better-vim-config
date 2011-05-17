@@ -1,3 +1,6 @@
-respond_to do |wants|
-	wants.${1:html} <+{ <++> }+>
+respond_to do |f|
+	f.html
+	f.js do
+		${1:render}
+	end
 end
