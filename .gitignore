@@ -1,2 +1,6 @@
-bundle/commandt/ruby/command-t/*
+bundle/commandt/ruby/command-t/*.o
+bundle/commandt/ruby/command-t/*.so
+bundle/commandt/ruby/command-t/*.bundle
+bundle/commandt/ruby/command-t/Makefile
+bundle/commandt/ruby/command-t/*.log
 *.swp
