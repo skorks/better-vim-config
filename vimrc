@@ -130,8 +130,8 @@ set vb t_vb=
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " Auto-backup files and .swp files don't go to pwd
 if MySys() == "windows"
-  set backupdir=~\_vimtmp,C:\temp,D:\tmp
-  set directory=~\_vimtmp,C:\temp,D:\tmp
+  set backupdir=~\_vimtmp,$TEMP
+  set directory=~\_vimtmp,$TEMP
 elseif MySys() == "linux"
   set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
   set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
