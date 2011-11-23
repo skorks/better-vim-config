@@ -4,3 +4,4 @@ bundle/commandt/ruby/command-t/*.bundle
 bundle/commandt/ruby/command-t/Makefile
 bundle/commandt/ruby/command-t/*.log
 *.swp
+.netrwhist
