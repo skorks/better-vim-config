@@ -1,0 +1,23 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2286
+
+Specky is a small collection of Vim functions to help make behavioral testing streamlined and easy when working with ruby and rspec.
+
+Here are some of the things you can do with Specky, with a single key stroke:
+
+    * Switch back and forth from code to testing spec
+    * Run the spec, with results going to a new, syntax highlighted buffer
+    * Jump quickly to spec failures and failure detail
+    * View rdoc of the word under the cursor
+    * Dynamically switch string types for the word under the cursor (double quoted, quoted, symbol)
+    * Create comment banners quickly 
+
+Specky also includes a couple of conveniences to make your everyday programming tasks smooooth and pleasurable, such as:
+
+    * File detection for spec files (that are named in the traditional *_spec.rb fashion.)
+    * Syntax highlighting for rspec and rdoc
+    * "Snippets" for rspec, using the Snipmate (vimscript #2540) plugin. 
+
+You can see a screencast of Specky here: http://projects.martini.nu/vim-stuff/wiki/SpeckyCast
+
+This is my first official VIM plugin.  Advice/props/criticisms all equally appreciated, but please let me know if you're using it!  (mahlon@martini.nu)   
+

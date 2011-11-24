@@ -1,0 +1,15 @@
+Vim syntax file to add some colorations for jQuery keywords
+and css selectors.
+
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=2416
+
+--------
+
+This mirror was set up by Scott Bronson: http://github.com/bronson
+Message me if it's out of date.
+
+When committing, make sure the author date matches the upstream release date.
+For 0.4 released on 2010-02-02:
+
+    $ GIT_AUTHOR_DATE=2010-02-02T00:00:00 git commit
+    $ GIT_COMMITTER_DATE=2010-02-02T00:00:00 git tag -a 0.4

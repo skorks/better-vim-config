@@ -1,25 +1,25 @@
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " The filetype and pathogen configs must be at the top of the file, to make sure plugins load correctly
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 filetype off "force the filetype detection to be off so that no confusion for pathogen.vim config
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " pathogen.vim configuration so all plugins can have a separate directory of their own
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
-call pathogen#runtime_append_all_bundles() 
-call pathogen#helptags()
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+call pathogen#infect("plugins") 
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Enable filetype plugin
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 set nocompatible
 syntax on "syntax highlighting
 filetype on
 filetype plugin on
 filetype indent on
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" => Omni complete functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" Omni complete functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
@@ -31,9 +31,9 @@ autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 autocmd Filetype java set omnifunc=javacomplete#Complete 
 autocmd BufNewFile,BufRead *.html.erb set filetype=html.eruby
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " General config options
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 set history=5000 "sets how many lines of history VIM has to remember
 set autoread "set to auto read when a file is changed from the outside
 set number "line numbers
@@ -41,10 +41,6 @@ set number "line numbers
 " With a map leader it's possible to do extra key combinations like <leader>w saves the current file
 let mapleader = ","
 let g:mapleader = ","
-
-" fast saving (for some reason can't put this comment on the same line as the
-" command, causes trouble)
-" nmap <leader>w :w!<cr> 
 
 " Fast editing of the .vimrc and cheetsheet
 if MySys() == "windows"
@@ -56,9 +52,9 @@ elseif MySys() == "linux" || MySys() == "mac"
   map <leader>c :e! ~/.vimruntime/cheatsheet.txt<cr>
 endif
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Set up color scheme, fonts, encoding and file formats
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 if has("gui_running")
   set guioptions-=T "no toolbar
   set background=dark
@@ -93,11 +89,13 @@ if MySys() == "windows"
   set ffs=dos,unix,mac "Default file types
 elseif MySys() == "linux"
   set ffs=unix,dos,mac "Default file types
+elseif MySys() == "mac"
+  set ffs=mac,unix,dos "Default file types
 endif
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " VIM UI and other useful stuff
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 set scrolloff=7 " Set 7 lines to the curors - when moving vertical..
 set wildmenu "Turn on WiLd menu (can set wildmode as well to customize completion)
 set ruler "Always show current position
@@ -125,9 +123,9 @@ set noerrorbells
 set novisualbell
 set vb t_vb=
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Files and backups
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Auto-backup files and .swp files don't go to pwd
 if MySys() == "windows"
   set backupdir=~\_vimtmp,$TEMP
@@ -135,11 +133,14 @@ if MySys() == "windows"
 elseif MySys() == "linux"
   set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
   set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+elseif MySys() == "mac"
+  set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+  set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 endif
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Text, tab, indent (can depend on type of file)
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 "2 spaces intead of tabs
 set tabstop=2
 set expandtab
@@ -156,15 +157,15 @@ set cindent
 set autoindent "Auto indent
 set wrap "Wrap lines
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " filetype indents etc
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 autocmd FileType c,cpp,javascript,xml,xhtml,html set shiftwidth=2 softtabstop=2
 autocmd FileType java,python set shiftwidth=4 softtabstop=4
 
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Convenience options
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 map 0 ^
 map - $
 map ' `
@@ -183,10 +184,6 @@ map <leader>bd :Bclose<cr>
 
 " Close all the buffers
 map <leader>ba :1,300 bd!<cr>
-
-" Use the arrows to something useful
-"map <right> :bn<cr>
-"map <left> :bp<cr>
 
 " When pressing <leader>cd switch to the directory of the open buffer
 map <leader>cd :cd %:p:h<cr>
@@ -233,9 +230,9 @@ endif
 map <leader>mb 20<C-W>>
 map <leader>ms 20<C-W><
 
-""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Statusline
-""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Always hide the statusline
 set laststatus=2
 
@@ -247,9 +244,9 @@ function! CurDir()
     return curdir
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Command mode related
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Smart mappings on the command line
 cno $h e ~/
 cno $d e ~/Desktop/
@@ -293,9 +290,9 @@ func! CurrentFileDir(cmd)
   return a:cmd . " " . expand("%:p:h") . "/"
 endfunc
 
-""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Visual mode
-""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 "  In visual mode when you press * or # to search for the current selection
 vnoremap <silent> * :call VisualSearch('f')<CR>
 vnoremap <silent> # :call VisualSearch('b')<CR>
@@ -330,9 +327,9 @@ function! VisualSearch(direction) range
     let @" = l:saved_reg
 endfunction
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Spell checking
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 "Pressing ,ss will toggle and untoggle spell checking
 map <leader>ss :setlocal spell!<cr>
 
@@ -342,18 +339,18 @@ map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
 
-""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " => Vim grep
-""""""""""""""""""""""""""""""
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated .git'
 if MySys() == "linux"
   set grepprg=/bin/grep\ -nH
 endif
 
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " => MISC
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
 
@@ -368,15 +365,6 @@ func! DeleteTrailingWS()
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
 
-" Alternatives to ESC: *******************************************************
-imap jkl <ESC>:w<cr>
-imap jlk <ESC>:w<cr>
-imap kjl <ESC>:w<cr>
-imap klj <ESC>:w<cr>
-imap lkj <ESC>:w<cr>
-imap ljk <ESC>:w<cr>
-imap ;l <ESC>:w<cr>
-
 "define :Lorem command to dump in a paragraph of lorem ipsum
 command! -nargs=0 Lorem :normal iLorem ipsum dolor sit amet, consectetur
       \ adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
@@ -387,74 +375,37 @@ command! -nargs=0 Lorem :normal iLorem ipsum dolor sit amet, consectetur
       \ proident, sunt in culpa qui officia deserunt mollit anim id est
       \ laborum
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Plugin configs
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " NERDTree 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 map <F2> :NERDTreeToggle<CR>
 map <leader>nf :NERDTreeFind<CR>
 
-""""""""""""""""""""""""""""""""""
-" Minibufferexplorer 
-""""""""""""""""""""""""""""""""""
-let g:miniBufExplModSelTarget = 1
-let g:miniBufExplorerMoreThanOne = 1
-let g:miniBufExplModSelTarget = 0
-let g:miniBufExplUseSingleClick = 1
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplVSplit = 25
-let g:miniBufExplSplitBelow=1
-let g:miniBufExplMapWindowNavVim = 1
-let g:miniBufExplMapWindowNavArrows = 1
-
-let g:bufExplorerSortBy = "name" 
-autocmd BufRead,BufNew :call UMiniBufExplorer
-map <leader>u :TMiniBufExplorer<cr>:TMiniBufExplorer<cr>
-
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " bufExplorer 
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
 
-""""""""""""""""""""""""""""""
-" Fuzzy finder
-""""""""""""""""""""""""""""""
-"try
-    "call fuf#defineLaunchCommand('FufCWD', 'file', 'fnamemodify(getcwd(), ''%:p:h'')')
-    "map <leader>t :FufCWD **/<CR>
-"catch
-"endtry
-
-""""""""""""""""""""""""""""""
-" Session manager 
-""""""""""""""""""""""""""""""
-map <leader>sl :SessionList<CR>
-map <F3> :SessionOpenLast<CR>
-map <leader>sc :SessionClose<CR>
-map <F4> :SessionSave<CR>
-map <leader>ssa :SessionSaveAs<CR>
-
-set viminfo='1000,f1,<500,!
-
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Taglist 
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 map <F5> :TlistToggle<cr>
 let Tlist_WinWidth = 50
 let Tlist_Process_File_Always = 1
 
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " OmniCompletion for snipmate 
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 let g:acp_behaviorSnipmateLength = 1
 
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " ctags stuff 
-""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 if MySys() == "linux"
   map <F8> :!/usr/bin/ctags -R .<CR>
 endif
@@ -463,4 +414,4 @@ endif
 let g:SuperTabCrMapping = 0
 
 " Conque Shell
-let g:ConqueTerm_ReadUnfocused = 1
+" let g:ConqueTerm_ReadUnfocused = 1 
