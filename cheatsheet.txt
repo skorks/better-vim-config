@@ -36,6 +36,8 @@ You need to build the C extension to make sure this thing works properly. You ne
 rvm use system  #have to use the same ruby that Vim links against
 rake make
 
+,t - search for files
+
 vim-ragtag
 --------------------------
 
@@ -68,6 +70,11 @@ bifkill.vim
 
 vim-rake
 --------------------------
+
+zencoding.vim
+--------------------------
+<C-y>, - expand zencoding abbreviation
+
 
 
 
