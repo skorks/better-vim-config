@@ -11,7 +11,7 @@ call pathogen#infect("plugins")
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Enable filetype plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-set nocompatible
+set nocompatible 
 syntax on "syntax highlighting
 filetype on
 filetype plugin on

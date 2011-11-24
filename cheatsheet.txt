@@ -31,6 +31,10 @@ bufexplorer.zip
 
 Command-T
 --------------------------
+You need to build the C extension to make sure this thing works properly. You need to jump into the plugin directory, then:
+
+rvm use system  #have to use the same ruby that Vim links against
+rake make
 
 vim-ragtag
 --------------------------
