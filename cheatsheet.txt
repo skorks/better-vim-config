@@ -2,32 +2,121 @@ pathogen
 --------------------------
 :Helptags - generate help doco for all directories in in runtimepath (if they have any)
 
+TailMinusF
+--------------------------
+:Tail filename - tail -f the file in a preview window
+:pclose - close the preview window
+
 vim-rails
 --------------------------
+:Rtags - generate tags for current rails project (needs exuberant ctags installed)
+:Rlog - crack open the log file (tail -f style)
+gf,C-wgf - based on cursor context edit file under cursor (current tab or new tab)
+:A,:AE,:AS,:AV,:AT,:AD - edit alternate file to current file (e.g. test file)
+:R,:RE,:RS,:RV,:RT,:RD - edit related file to current file
+:Rcontroller,:Renvironment,:Rfixtures,:Rfunctionaltest,:Rhelper,:Rinitializer,:Rintegrationtest,:Rjavascript,:Rlayout,:Rlib,:Rlocale,:Rmailer,:Rmetal,:Rmigration,:Rmodel,:Robserver,:Rplugin,:Rschema,:Rspec,:Rstylesheet,:Rtask,:Runittest,:Rview <name> - edit current relevant file, or relevant file with name			
+:[range]Rake {targets},:[range]Rake! {targets} - run specified rake targets, has sensible defaults (with the bang won't open quickfix window)
+:Rscript {script} {options} - run script, e.g. :Rscript console to run up the console
+
+with surround adds the following surroundings
+=	<%= ^ %>
+-	<% ^ -%>
+#	<%# ^ %>
 
 vim-fugitive
 --------------------------
+:Git [args] - run arbitrary git command
+:Gstatus    - Bring up the output of git-status in the preview window.  The following maps, which work on the cursor line file where sensible, are provided:
+    <C-N> next file
+    <C-P> previous file
+    <CR>  |:Gedit|
+    -     |:Git| add
+    -     |:Git| reset (staged files)
+    C     |:Gcommit|
+    cA    |Gcommit| --amend --reuse-message=HEAD
+    ca    |Gcommit| --amend
+    D     |:Gdiff|
+    ds    |:Gsdiff|
+    dp    |:Git!| diff (p for patch; use :Gw to apply)
+    dp    |:Git| add --intent-to-add (untracked files)
+    dv    |:Gvdiff|
+    O     |:Gtabedit|
+    o     |:Gsplit|
+    p     |:Git| add --patch
+    p     |:Git| reset --patch (staged files)
+    q     close status
+    R     reload status
+:Gcommit [args] - wraps git commit, commit message in split window
+:Glog [args]    -  Load all previous revisions of the current file into
+                        the quickfix list.
+
+MORE TO LOOK AT, but need to try them all out to understand what they do!!!
 
 vim-surround
 --------------------------
+ds",dst - delere specified surround (t is if it is an xml tag)
+cs"',cs"<q>,cst<p> - change surround from one to the other,or into a tag, or a tag into another tag
+ysiw) - insert surround, i.e. you surround vim motion with the specified
+ySiw) - same as above but indent surround text and place the chars on separate lines
+yss - surround current line
+ySS - indent surround text and place surround chars on separate lines
+vS - in visual mode simply pressing S allows you to specify surrounds, in linewise the text is indented and surrounds are on separate lines, in blockwise each line is surrounded
+
+Eight punctuation marks, (, ), {, }, [, ], <, and >, represent themselves and their counterparts.  If the opening mark is used, contained whitespace is also trimmed.  The targets b, B, r, and a are aliases for ), }, ], and > 
 
 vim-cucumber
 --------------------------
 
 nerdcommenter
 --------------------------
+,c<space> - comment out current line, or current selection if in visual mode
 
 nerdtree
 --------------------------
-
-nerdtree
---------------------------
+F2 - open nerdtree
+ma - add childnode
+mm - move current node
+md - delete current node
+mc - copy current node
+t,T - open in new tab, silently
+o,O - open/close node, recursively
+x,X - close parent of node, close all child nodes of current node
+p,P - go to parent, go to root
+C - change root to current dir
+u,U - move tree root up a dir, move tree root up but leave old root open
+r,R - refresh dir, refresh root
+m - show menu
+I - show hidden files
+q - close nerdtree window
+A - zoom nerdtree window
 
 ack.vim
 --------------------------
+You obviously need to have ack installed
+
+:Ack[!] [options] {pattern} [{directory}] - search current directory for pattern, opens matches in quickfix window
+:AckAdd [options] {pattern} [{directory}] - same as Ack but append to current quickfix list
+:AckFromSearch [{directory}] - use pattern from previous search
+:AckFile [options] {pattern} [{directory}] - search for filename matching pattern
 
 bufexplorer.zip
 --------------------------
+,be or ,bs or ,bv - open explorer in current windows, split or vsplit
+
+Commands to use once exploring:
+
+<F1> - help information.
+<enter> or <leftmouse>, <shift-enter> - open buffer in current window, open in another tab
+d - delete the buffer under the cursor from the list
+R - toggles relative path/absolute path
+T - toggles to show only buffers for this tab or not
+f - toggles whether you are taken to the active window when selecting a buffer or not
+o - opens the buffer that is under the cursor into the current window
+q - quit exploring
+r - reverses the order the buffers are listed in
+s - order buffers by buffer number, file name, file extension, most recently used (MRU), or full path.
+t - opens the buffer that is under the cursor in another tab.
+u - toggles the showing of "unlisted" buffers.
 
 Command-T
 --------------------------
@@ -40,6 +129,48 @@ rake make
 
 vim-ragtag
 --------------------------
+Using binding in insert mode at the end of line consiting of foo:
+
+<C-X>=  - foo<%= ^ %> 
+<C-X>+  - <%= foo^ %>
+<C-X>-  - foo<% ^ %>
+<C-X>_  - <% foo^ %>
+<C-X>'  - foo<%# ^ %>
+<C-X>"  - <%# foo^ %> 
+<C-X><Space> - <foo>^</foo>
+<C-X><CR>    - <foo>\n^\n</foo>
+<C-X>/       - Last HTML tag closed
+
+vim-unimpared
+--------------------------
+[a - |:previous| file in argument list
+]a - |:next| file in argument list
+[A - |:first| file in argument list
+]A - |:last| file in argument list
+[b - |:bprevious| buffer in buffer list
+]b - |:bnext| buffer in buffer list
+[B - |:bfirst| buffer in buffer list
+]B - |:blast| buffer in buffer list
+[l - |:lprevious| error in location list for current window
+]l - |:lnext| error in location list for current window
+[L - |:lfirst| error in location list for current window
+]L - |:llast| error in location list for current window
+[q - |:cprevious| error in quickfix list
+]q - |:cnext| error in quickfix list
+[Q - |:cfirst| error in quickfix list
+]Q - |:clast| error in quickfix list
+[t - |:tprevious| tag in matching tag list
+]t - |:tnext| tag in matching tag list
+[T - |:tfirst| tag in matching tag list
+]T - |:tlast| tag in matching tag list
+[e - exchange the current line with line above
+]e - exchange the current line with line below
+[x{motion}, [xx, {Visual}[x - xml encode
+]x{motion}, ]xx, {Visual}]x - xml decode
+[u{motion}, [uu, {Visual}[u - url encode
+]u{motion}, ]uu, {Visual}]u - url decode
+[y{motion}, [yy, {Visual}[y - C string encode (i.e. backslash escape)
+]y{motion}, ]yy, {Visual}]y - C string decode
 
 snipmate.vim
 --------------------------
@@ -76,6 +207,8 @@ zencoding.vim
 <C-y>, - expand zencoding abbreviation
 
 
+
+C-^ - edit the previous file
 
 
 Movement commands

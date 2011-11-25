@@ -7,6 +7,7 @@ filetype off "force the filetype detection to be off so that no confusion for pa
 " pathogen.vim configuration so all plugins can have a separate directory of their own
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 call pathogen#infect("plugins") 
+call pathogen#helptags()
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Enable filetype plugin
@@ -237,7 +238,7 @@ map <leader>ms 20<C-W><
 set laststatus=2
 
 " Format the statusline
-set statusline=\ %F%m%r%h\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+set statusline=\ %F%m%r%h%{fugitive#statusline()}\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 
 function! CurDir()
     let curdir = substitute(getcwd(), '/', "~/", "g")
@@ -415,3 +416,10 @@ let g:SuperTabCrMapping = 0
 
 " Conque Shell
 " let g:ConqueTerm_ReadUnfocused = 1 
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" syntastic
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+let g:syntastic_enable_signs=1
+let g:syntastic_auto_loc_list=1
+let g:syntastic_enable_signs=1
