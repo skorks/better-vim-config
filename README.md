@@ -97,3 +97,7 @@ There is also a handy mapping which will instantly bring the cheatsheet up no ma
     <Leader>c
 
 Since the leader key for this config is the comma we have `,c`.
+
+## TODO
+
+List all the things that need to be installed for all the plugins to function properly e.g. exuberant ctags for taglist, various stuff for syntastic, ack for ack.vim etc.
