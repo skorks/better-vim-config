@@ -91,7 +91,7 @@ if MySys() == "windows"
 elseif MySys() == "linux"
   set ffs=unix,dos,mac "Default file types
 elseif MySys() == "mac"
-  set ffs=mac,unix,dos "Default file types
+  set ffs=unix,dos,mac "Default file types
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
