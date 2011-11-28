@@ -50,7 +50,7 @@ if MySys() == "windows"
 elseif MySys() == "linux" || MySys() == "mac"
   map <leader>e :e! ~/.vimruntime/vimrc<cr>
   autocmd! bufwritepost vimrc source ~/.vimruntime/vimrc "when vimrc is edited, reload it
-  map <leader>c :e! ~/.vimruntime/cheatsheet.txt<cr>
+  map <leader>c :e! ~/.vimruntime/cheatsheet.md<cr>
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  

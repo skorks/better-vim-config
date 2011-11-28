@@ -1,4 +1,31 @@
-pathogen
+## Movement commands
+
+h,j,k,l                     - left, down, up, right 
+$, -                        - go to end of line
+^, 0                        - go to start of line
+gg,G                        - start, end of file
+H,M,L                       - cursor to top, middle, bottom of screen
+:5, 5G                      - go to line 5
+w,b,e,ge                    - next word start, previous word start, next word end, previous word end
+(,),{,}                     - next, previous sentence, next, previous paragraph
+n|                          - nth column of current line
+%                           - jump ot matching bracket (),{},[]
+<C-e>, <C-y>                - scroll up, down
+<C-f>, <C-b>                - move up, down one screen at a time
+mc                          - mark current position where c is [a..Z]
+`c, 'c                      - go to mark
+`., '.                      - last edited line
+:marks                      - print all marks
+:jumps                      - print all jumps
+n<C-o>                      - go to nth older position in jump list, scroll forward through jump list
+n<C-i>                      - go to nth newer position in jump list, scroll backward through jump list
+g;,g,                       - jump backwards and forwards through the changelist
+f,t,F,T                     - move forward to,before a specified character, move backward to,before a 
+                              specified character(; or , - repeat the command forward or backward)
+
+
+
+Pathogen
 --------------------------
 :Helptags - generate help doco for all directories in in runtimepath (if they have any)
 
@@ -230,29 +257,6 @@ examples:
 html:xt>div#header>div#logo+ul#nav>li.item-$*5>a
 
 
-Movement commands
-----------------------
-h,j,k,l - left, down, up, right 
-$, - - go to end of line
-^, 0 - go to start of line
-gg,G -start, end of file
-H,M,L - cursor to top, middle, bottom of screen
-:5, 5G - go to line 5
-w,b,e,ge - next word start, previous word start, next word end, previous word end
-(,),{,} - next, previous sentence, next, previous paragraph
-n| - nth column of current line
-% - jump ot matching bracket (),{},[]
-<ctrl-e>, <ctrl-y> - scroll up, down
-<ctrl-f>, <ctrl-b> - move up, down one screen at a time
-mc - mark current position where c is [a..Z]
-`c, 'c - go to mark
-`., '. - last edited line
-:marks - print all marks
-:jumps - print all jumps
-n<ctrl-o> - go to nth older position in jump list, scroll forward through jump list
-n<ctrl-i> - go to nth newer position in jump list, scroll backward through jump list
-g;,g, - jump backwards and forwards through the changelist
-f,t,F,T - move forward to,before a specified character, move backward to,before a specified character(; or , - repeat the command forward or backward)
 
 Insert commands
 --------------------------
