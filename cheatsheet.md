@@ -1,29 +1,88 @@
-## Movement commands
+Movement Commands
+--------------------------
 
-h,j,k,l                     - left, down, up, right 
-$, -                        - go to end of line
-^, 0                        - go to start of line
-gg,G                        - start, end of file
-H,M,L                       - cursor to top, middle, bottom of screen
-:5, 5G                      - go to line 5
-w,b,e,ge                    - next word start, previous word start, next word end, previous word end
-(,),{,}                     - next, previous sentence, next, previous paragraph
-n|                          - nth column of current line
-%                           - jump ot matching bracket (),{},[]
-<C-e>, <C-y>                - scroll up, down
-<C-f>, <C-b>                - move up, down one screen at a time
-mc                          - mark current position where c is [a..Z]
-`c, 'c                      - go to mark
-`., '.                      - last edited line
-:marks                      - print all marks
-:jumps                      - print all jumps
-n<C-o>                      - go to nth older position in jump list, scroll forward through jump list
-n<C-i>                      - go to nth newer position in jump list, scroll backward through jump list
-g;,g,                       - jump backwards and forwards through the changelist
-f,t,F,T                     - move forward to,before a specified character, move backward to,before a 
-                              specified character(; or , - repeat the command forward or backward)
+* h,j,k,l                - left, down, up, right 
+* $, -                   - go to end of line
+* ^, 0                   - go to start of line
+* gg,G                   - start, end of file
+* H,M,L                  - cursor to top, middle, bottom of screen
+* :5, 5G                 - go to line 5
+* w,b,e,ge               - next word start, previous word start, next word end, previous word end
+* (,),{,}                - next, previous sentence, next, previous paragraph
+* n|                     - nth column of current line
+* %                      - jump ot matching bracket (),{},[]
+* <C-e>, <C-y>           - scroll up, down
+* <C-f>, <C-b>           - move up, down one screen at a time
+* mc                     - mark current position where c is [a..Z]
+* `c, 'c                 - go to mark
+* `., '.                 - last edited line
+* :marks                 - print all marks
+* :jumps                 - print all jumps
+* n<C-o>                 - go to nth older position in jump list, scroll forward through jump list
+* n<C-i>                 - go to nth newer position in jump list, scroll backward through jump list
+* g;,g,                  - jump backwards and forwards through the changelist
+* f,t,F,T                - move forward to,before a specified character, move backward to,before a 
+                           specified character(; or , - repeat the command forward or backward)
 
+Insert Commands
+--------------------------
 
+* i,I                    - insert, start of line
+* a,A,ea                 - append, end of line, end of word
+* o,O                    - blank line below, blank line above
+* esc, <C-[>, <C-c>      - exit from insert mode
+* r                      - replace a single character (does not use insert mode)
+* J                      - join line below to the current one (pur number before to join several lines)
+* s                      - delete character and substitute text (add number in front to delete x characters)
+* cw,cc                  - replace word, line C - rewrite to end of line
+* x,X                    - delete character right, left
+* dw,dd                  - delete word, line (cut)
+* yw, yy                 - copy word, line (number in front for multiple) (copy)
+* p,P                    - paste after, before
+* :x,yd                  - delete lines x through y
+* "ayy, "ap              - copy line into register a, paste
+* ~,g~m                  - switch case of char, movement command
+* gum, gUm               - lowercase, uppercase text of movement command
+* <C-w>                  - backspace over a word while in insert mode
+* <C-o>                  - enter normal mode for one command while in insert mode
+* <C-u>                  - delete to beginning of indent while in insert mode
+* <C-x> <C-l>            - line completion while in insert mode
+* <C-y>                  - copy letter above the cursor
+* <C-e>                  - copy letter below the cursor
+* <C-x> <C-o>            - omnicompletion
+* < C-r" >               - paste from default register in insert mode (probably can substitute the " 
+                           to any other register to paste from that one)
+
+Search/Replace Commands
+---------------------------
+
+* /,?                    - search forward, backward
+* n,N                    - repeat search in same direction, opposite direction
+* :s/old/new/g           - replace only on current line
+* :%s/old/new/g          - replace old with new in file
+* :%s/old/new/gc         - replace old with new in file with confirmation
+* *, #                   - search for next instance of word under cursor, previous instance
+* :%s/\<foo\>/bar/gc     - change only whole words exactly matching 'foo' to 'bar'; ask for confirmation
+* :%s/foo/bar/gci        - change each 'foo' (case insensitive) to 'bar'; ask for confirmation
+* :g/^baz/s/foo/bar/g    - change each 'foo' to 'bar' in each line starting with 'baz'
+* :%s//bar/g             - replace each match of the last search pattern with 'bar'
+* :%s/foo/<c-r><c-w>/g   - replace each occurrence of 'foo' with the word under the cursor
+* :%s/foo/<c-r><c-a>/g   - replace each occurrence of 'foo' with the WORD under the cursor
+* :%s/foo/<c-r>a/g       - replace each occurrence of 'foo' with the contents of register 'a'
+* :%s/<c-r>a/bar/g       - replace all occurrences of the text in register 'a' with 'bar'
+
+Buffers And Split Windows
+---------------------------
+* :e file                - open file in new buffer
+* :bn, :bp, :b3, :bd     - next buffer, previous buffer, buffer number 3, close buffer/file
+* :sb3                   - buffer number 3 split window horizontally
+* :split                 - split current window
+* :new file              - open new file in split window
+* <C+ws>                 - Split windows
+* <C+wv>                 - Split windows vertically
+* <C-w>q                 - close currently selected split window
+* <C-w>_                 - maximize current window
+* <C-h,j,k,l>            - move between split windows
 
 Pathogen
 --------------------------
@@ -258,62 +317,8 @@ html:xt>div#header>div#logo+ul#nav>li.item-$*5>a
 
 
 
-Insert commands
---------------------------
-i,I - insert, start of line
-a,A,ea - append, end of line, end of word
-o,O - blank line below, blank line above
-esc, ctrl-[, ctrl-c - exit from insert mode
-r - replace a single character (does not use insert mode)
-J - join line below to the current one (pur number before to join several lines)
-s - delete character and substitute text (add number in front to delete x characters)
-cw,cc - replace word, line C - rewrite to end of line
-x,X - delete character right, left
-dw,dd - delete word, line (cut)
-yw, yy - copy word, line (number in front for multiple) (copy)
-p,P - paste after, before
-:x,yd - delete lines x through y
-"ayy, "ap - copy line into register a, paste
-~,g~m - switch case of char, movement command
-gum, gUm - lowercase, uppercase text of movement command
-ctrl-w - backspace over a word while in insert mode
-ctrl-o - enter normal mode for one command while in insert mode
-ctrl-u - delete to beginning of indent while in insert mode
-ctrl-x ctrl-l - line completion while in insert mode
-ctrl-y - copy letter above the cursor
-ctrl-e - copy letter below the cursor
-ctrl-x ctrl-o - omnicompletion
-ctrl-r" - paste from default register in insert mode (probably can substitute the " to any other register to paste from that one)
 
-Search/replace commands
----------------------------
-/,? - search forward, backward
-n,N - repeat search in same direction, opposite direction
-:s/old/new/g - replace only on current line
-:%s/old/new/g - replace old with new in file
-:%s/old/new/gc - replace old with new in file with confirmation
-*, # - search for next instance of word under cursor, previous instance
-:%s/\<foo\>/bar/gc - change only whole words exactly matching 'foo' to 'bar'; ask for confirmation
-:%s/foo/bar/gci - change each 'foo' (case insensitive) to 'bar'; ask for confirmation
-:g/^baz/s/foo/bar/g - change each 'foo' to 'bar' in each line starting with 'baz'
-:%s//bar/g - replace each match of the last search pattern with 'bar'
-:%s/foo/<c-r><c-w>/g - replace each occurrence of 'foo' with the word under the cursor
-:%s/foo/<c-r><c-a>/g - replace each occurrence of 'foo' with the WORD under the cursor
-:%s/foo/<c-r>a/g - replace each occurrence of 'foo' with the contents of register 'a'
-:%s/<c-r>a/bar/g - replace all occurrences of the text in register 'a' with 'bar'
 
-Buffers And Split Windows
----------------------------
-:e file - open file in new buffer
-:bn, :bp, :b3, :bd - next buffer, previous buffer, buffer number 3, close buffer/file
-:sb3 - buffer number 3 split window horizontally
-:split - split current window
-:new file - open new file in split window
-<ctrl+ws> - Split windows
-<ctrl+wv> - Split windows vertically
-<ctrl-w>q - close currently selected split window
-<ctrl-w>_ - maximize current window
-<ctrl-h,j,k,l> - move between split windows
 
 Visual mode commands
 --------------------------
