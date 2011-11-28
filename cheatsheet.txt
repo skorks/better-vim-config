@@ -174,29 +174,49 @@ vim-unimpared
 
 snipmate.vim
 --------------------------
+ruby
 
-syntastic
---------------------------
+eruby
+
+
 
 taglist
 --------------------------
+:TlistToggle - toggle tag list window
 
 vim-easygrep
 --------------------------
+,vv  - Grep for the word under the cursor, match all occurences, like 'g*'.
+,vV  - Grep for the word under the cursor, match whole word, like '*'.
+,va  - Like vv, but add to existing list.
+,vA  - Like vV, but add to existing list.
+,vr  - Perform a global search on the word under the cursor and prompt for a pattern with which to replace it.
+,vR  - Like vr, but match whole word.
+,vo  - Open an options explorer to select the files to search in and set grep options.
+
+:Grep [arg] - Search for the specified arg, like <Leader>vv.  When an ! is added, search like <Leader>vV
+:GrepAdd [arg] - Search for the specified arg, add to existing file list, as in <Leader>va.  When an ! is added, search like <Leader>vA
+
+    The Above commands can additionally accept command switches:
+    -r   Perform a recursive search
+    -R   Perform a recursive search
+    -i   Perform a case-insensitive search
+    -I   Perform a case-sensitive search
+    -m   Specify the number of matches to get
+
+:Replace [target] [replacement]
+:Replace /[target]/[replacement]/ - Perform a global search and replace.  
+:ReplaceUndo - Undoes the last :Replace operation.  
+:GrepOptions - Open the options explorer to set options.
 
 vim-coffee-script
 --------------------------
+:CoffeeMake[!] {opts}	
+:[range]CoffeeCompile [vertical] [{win-size}] - Shows how the current file or [range] is compiled to JavaScript. 
+:CoffeeCompile {watch} [vertical] [{win-size}] - The watch mode of :CoffeeCompile emulates the "Try CoffeeScript" live preview on the CoffeeScript web site. 
+:[range]CoffeeRun	Compiles the file or [range] and runs the resulting JavaScript, displaying the output.
 
 Specky
---------------------------
-
-vim-supertab
---------------------------
-
-vim-yankring
---------------------------
-
-bifkill.vim
 --------------------------
 
 vim-rake
@@ -206,9 +226,8 @@ zencoding.vim
 --------------------------
 <C-y>, - expand zencoding abbreviation
 
-
-
-C-^ - edit the previous file
+examples:
+html:xt>div#header>div#logo+ul#nav>li.item-$*5>a
 
 
 Movement commands
@@ -266,9 +285,18 @@ Search/replace commands
 ---------------------------
 /,? - search forward, backward
 n,N - repeat search in same direction, opposite direction
+:s/old/new/g - replace only on current line
 :%s/old/new/g - replace old with new in file
 :%s/old/new/gc - replace old with new in file with confirmation
 *, # - search for next instance of word under cursor, previous instance
+:%s/\<foo\>/bar/gc - change only whole words exactly matching 'foo' to 'bar'; ask for confirmation
+:%s/foo/bar/gci - change each 'foo' (case insensitive) to 'bar'; ask for confirmation
+:g/^baz/s/foo/bar/g - change each 'foo' to 'bar' in each line starting with 'baz'
+:%s//bar/g - replace each match of the last search pattern with 'bar'
+:%s/foo/<c-r><c-w>/g - replace each occurrence of 'foo' with the word under the cursor
+:%s/foo/<c-r><c-a>/g - replace each occurrence of 'foo' with the WORD under the cursor
+:%s/foo/<c-r>a/g - replace each occurrence of 'foo' with the contents of register 'a'
+:%s/<c-r>a/bar/g - replace all occurrences of the text in register 'a' with 'bar'
 
 Buffers And Split Windows
 ---------------------------
@@ -330,7 +358,7 @@ q:, q/ - open command line history window, search hostpry window, can edit histo
 ,t - launch fuzzy finder in current directory
 ,q - open a scratch buffer for scribbling
 ,nf - open current selected file in NERDTree
-
+C-^ - edit the previous file
 
 Operators and Motions and Text Objecs
 ------------------------------------
@@ -409,14 +437,6 @@ FuzzyFinder/Commnd T
 ---------------------------------
 't - file finder
 
-Showmarks
---------------------------------
-,mt  - Toggles ShowMarks on and off.
-,mo  - Turns ShowMarks on, and displays
-,mh  - Clears a mark.
-,ma  - Clears all marks.
-,mm  - Places the next available mark.
-
 Taglist
 ---------------------------------
 p - preview current tag (don't jump the cursor to editor window)
@@ -426,16 +446,3 @@ u - refresh tags for file
 s - sort tags in different ways
 x - maximize or minimize tag window
 
-Commenting (Nerd commenter)
-----------------------------------
-,c<space> - toggle commented state of lines (prepend with number for multiple lines, or visual select)
-,ci - toggle commented state of lines individually, any commented line is uncommented and vice versa
-,cy - yank and comment line
-,c$ - comment from cursor to end of line
-,cA - add comment at the end of the line and go into insert mode
-,cb - aling the comments
-,cu - uncomment selected lines
-
-ZoomWin
--------------------------------------
-Ctrl-w o - maximize current window, or unmaximize to restore previous window configuration
