@@ -53,6 +53,11 @@ elseif MySys() == "linux" || MySys() == "mac"
   map <leader>c :e! ~/.vimruntime/cheatsheet.md<cr>
 endif
 
+" location of the ctags command to stop ctags errors
+if MySys() == "mac"
+  let Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8/bin/ctags'
+endif
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Set up color scheme, fonts, encoding and file formats
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
