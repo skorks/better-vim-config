@@ -31,6 +31,7 @@ autocmd FileType c set omnifunc=ccomplete#Complete
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 autocmd Filetype java set omnifunc=javacomplete#Complete 
 autocmd BufNewFile,BufRead *.html.erb set filetype=html.eruby
+autocmd BufNewFile,BufRead *.god set filetype=ruby
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " General config options
@@ -123,6 +124,7 @@ set showcmd " see what you're actually doing with the keyboard
 set sidescroll=1
 set sidescrolloff=3
 set printoptions=paper:letter
+set shortmess+=A
 
 " No sound on errors
 set noerrorbells
