@@ -421,6 +421,9 @@ endif
 " Fix supertab/endwise incompatibility
 let g:SuperTabCrMapping = 0
 
+" Open tag under cursor in a new tab
+nmap <C-\> <C-w><C-]><C-w>T
+
 " Conque Shell
 " let g:ConqueTerm_ReadUnfocused = 1 
 

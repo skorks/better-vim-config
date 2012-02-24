@@ -390,6 +390,9 @@ Ctags stuff
 ------------------------------------
 * ctrl-] - go to tag under cursor
 * ctrl-t - go back to where you were after having jumped to tag
+* ctrl-w ctrl-] - open tag under cursor in a horizontal split
+* ctrl-\ - open tag under cursor in a new tab
+* ctrl-W c - close the currently open tab
 
 Abbreviations
 ----------------------------------
