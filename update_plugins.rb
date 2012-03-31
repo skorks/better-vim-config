@@ -53,7 +53,8 @@ if Dir.exists? PLUGINS_DIR
     "https://github.com/tpope/vim-surround.git",
     "https://github.com/tpope/vim-unimpaired.git",
     "https://github.com/chrismetcalf/vim-yankring.git",
-    "https://github.com/mattn/zencoding-vim.git"
+    "https://github.com/mattn/zencoding-vim.git",
+    "https://github.com/wlangstroth/vim-racket.git"
   ].each do |plugin_repo|
     clone_plugin_repo(plugin_repo)
   end

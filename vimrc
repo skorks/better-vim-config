@@ -433,3 +433,23 @@ nmap <C-\> <C-w><C-]><C-w>T
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_enable_signs=1
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" vim-easygrep 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+set grepprg=ack
+let g:EasyGrepMode=0
+let g:EasyGrepCommand=1
+let g:EasyGrepRecursive=0
+let g:EasyGrepIgnoreCase=1
+let g:EasyGrepHidden=1
+let g:EasyGrepAllOptionsInExplorer=1
+let g:EasyGrepWindow=0
+let g:EasyGrepReplaceWindowMode=0
+let g:EasyGrepOpenWindowOnMatch=1
+let g:EasyGrepEveryMatch=1
+let g:EasyGrepJumpToMatch=0
+let g:EasyGrepInvertWholeWord=0
+let g:EasyGrepFileAssociationsInExplorer=0
+let g:EasyGrepOptionPrefix='<leader>vy'
+let g:EasyGrepReplaceAllPerFile=0
