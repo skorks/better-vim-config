@@ -75,6 +75,53 @@ nmap ]o <Plug>unimpairedONext
 nmap [o <Plug>unimpairedOPrevious
 
 " }}}1
+" Diff {{{1
+
+nmap [n <Plug>unimpairedContextPrevious
+nmap ]n <Plug>unimpairedContextNext
+omap [n <Plug>unimpairedContextPrevious
+omap ]n <Plug>unimpairedContextNext
+
+nnoremap <silent> <Plug>unimpairedContextPrevious :call <SID>Context(1)<CR>
+nnoremap <silent> <Plug>unimpairedContextNext     :call <SID>Context(0)<CR>
+onoremap <silent> <Plug>unimpairedContextPrevious :call <SID>ContextMotion(1)<CR>
+onoremap <silent> <Plug>unimpairedContextNext     :call <SID>ContextMotion(0)<CR>
+
+function! s:Context(reverse)
+  call search('^@@ .* @@\|^[<=>|]\{7}[<=>|]\@!', a:reverse ? 'bW' : 'W')
+endfunction
+
+function! s:ContextMotion(reverse)
+  if a:reverse
+    -
+  endif
+  call search('^@@ .* @@\|^diff \|^[<=>|]\{7}[<=>|]\@!', 'bWc')
+  if getline('.') =~# '^diff '
+    let end = search('^diff ', 'Wn') - 1
+    if end < 0
+      let end = line('$')
+    endif
+  elseif getline('.') =~# '^@@ '
+    let end = search('^@@ .* @@\|^diff ', 'Wn') - 1
+    if end < 0
+      let end = line('$')
+    endif
+  elseif getline('.') =~# '^=\{7\}'
+    +
+    let end = search('^>\{7}>\@!', 'Wnc')
+  elseif getline('.') =~# '^[<=>|]\{7\}'
+    let end = search('^[<=>|]\{7}[<=>|]\@!', 'Wn') - 1
+  else
+    return
+  endif
+  if end > line('.')
+    execute 'normal! V'.(end - line('.')).'j'
+  elseif end == line('.')
+    normal! V
+  endif
+endfunction
+
+" }}}1
 " Line operations {{{1
 
 function! s:BlankUp(count) abort
@@ -137,6 +184,65 @@ endfunction
 function! s:UrlDecode(str)
   let str = substitute(substitute(substitute(a:str,'%0[Aa]\n$','%0A',''),'%0[Aa]','\n','g'),'+',' ','g')
   return substitute(str,'%\(\x\x\)','\=nr2char("0x".submatch(1))','g')
+endfunction
+
+let g:unimpaired_base64_chars = map(range(char2nr('A'),char2nr('Z')),'nr2char(v:val)')
+                            \ + map(range(char2nr('a'),char2nr('z')),'nr2char(v:val)')
+                            \ + map(range(char2nr('0'),char2nr('9')),'nr2char(v:val)')
+                            \ + ['+','/']
+
+let g:unimpaired_base64_filler = '='
+let g:unimpaired_base64_reverse_map = {}
+let s:pos = 0
+for s:char in g:unimpaired_base64_chars
+    let g:unimpaired_base64_reverse_map[s:char] = s:pos
+    let s:pos = s:pos + 1
+endfor
+unlet s:pos
+
+function! s:Base64Encode(str)
+  " Respect current file encoding
+  let to_be_encoded=a:str
+  let encoded = ''
+  while len(to_be_encoded) > 2
+    let encoded .= g:unimpaired_base64_chars[char2nr(to_be_encoded[0])/4]
+              \ .  g:unimpaired_base64_chars[16*(char2nr(to_be_encoded[0])%4 )+char2nr(to_be_encoded[1])/16]
+              \ .  g:unimpaired_base64_chars[4 *(char2nr(to_be_encoded[1])%16)+char2nr(to_be_encoded[2])/64]
+              \ .  g:unimpaired_base64_chars[char2nr(to_be_encoded[2])%64]
+    let to_be_encoded = to_be_encoded[3:]
+  endwhile
+  if len(to_be_encoded) == 2
+    let encoded .= g:unimpaired_base64_chars[char2nr(to_be_encoded[0])/4]
+              \ .  g:unimpaired_base64_chars[16*(char2nr(to_be_encoded[0])%4 )+char2nr(to_be_encoded[1])/16]
+              \ .  g:unimpaired_base64_chars[4 *(char2nr(to_be_encoded[1])%16)]
+              \ .  g:unimpaired_base64_filler
+  elseif len(to_be_encoded) == 1
+    let encoded .= g:unimpaired_base64_chars[char2nr(to_be_encoded[0])/4]
+              \ .  g:unimpaired_base64_chars[16*(char2nr(to_be_encoded[0])%4 )]
+              \ .  g:unimpaired_base64_filler
+              \ .  g:unimpaired_base64_filler
+  endif
+  return encoded
+endfunction
+
+function! s:Base64Decode(str)
+    let to_be_decoded=a:str
+    let decoded=''
+    while len(to_be_decoded) % 4 == 0
+        let decoded .= nr2char(   4 * (g:unimpaired_base64_reverse_map[to_be_decoded[0]]      )
+                             \  +     (g:unimpaired_base64_reverse_map[to_be_decoded[1]] / 16 )
+                             \)
+        if to_be_decoded[2] !=# g:unimpaired_base64_filler
+            let decoded .= nr2char(16 * (g:unimpaired_base64_reverse_map[to_be_decoded[1]] % 16) + (g:unimpaired_base64_reverse_map[to_be_decoded[2]]/4))
+            if to_be_decoded[3] !=# g:unimpaired_base64_filler
+                let decoded .= nr2char(64 * (g:unimpaired_base64_reverse_map[to_be_decoded[2]] % 4) + g:unimpaired_base64_reverse_map[to_be_decoded[3]])
+            endif
+        endif
+        let to_be_decoded = to_be_decoded[4:]
+        if empty(to_be_decoded)
+            return decoded
+        endif
+    endwhile
 endfunction
 
 " HTML entities {{{2
@@ -284,6 +390,8 @@ call s:MapTransform('UrlEncode','[u')
 call s:MapTransform('UrlDecode',']u')
 call s:MapTransform('XmlEncode','[x')
 call s:MapTransform('XmlDecode',']x')
+call s:MapTransform('Base64Encode','[Y')
+call s:MapTransform('Base64Decode',']Y')
 
 " }}}1
 

@@ -185,7 +185,7 @@ function! s:project(...) abort
     endif
     return extend(extend(project,s:project_prototype,'keep'),s:abstract_prototype,'keep')
   endif
-  call s:throw('not a Bundler project: '.expand('%:p'))
+  call s:throw('not a Bundler project: '.(a:0 ? a:1 : expand('%')))
 endfunction
 
 function! s:project_path(...) dict abort
@@ -195,15 +195,39 @@ endfunction
 call s:add_methods('project',['path'])
 
 function! s:project_gems() dict abort
-  let time = getftime(self.path('Gemfile.lock'))
+  let lock_file = self.path('Gemfile.lock')
+  let time = getftime(lock_file)
   if time != -1 && time != get(self,'_lock_time',-1)
-    let self._gems = {}
-
     " Explicitly setting $PATH means /etc/zshenv on OS X can't touch it.
     if executable('env')
       let prefix = 'env PATH='.s:shellesc($PATH).' '
     else
       let prefix = ''
+    endif
+
+    let self._gems = {}
+
+    let gems = self._gems
+    let lines = readfile(lock_file)
+    let gem_paths = split($GEM_PATH ==# '' ? system(prefix.'ruby -rubygems -e "print Gem.path.join(%(:))"') : $GEM_PATH, ':\|;')
+    for line in lines
+      if line !~ '\v\s+[a-zA-Z0-9_-]+\s+\(\d+'
+        continue
+      endif
+      let name = split(line, ' ')[0]
+      let v = substitute(line, '.*(\|).*', '', 'g')
+      for path in gem_paths
+        let dir = join([path, 'gems', name.'-'.v], '/')
+        if isdirectory(dir)
+          let gems[name] = dir
+          break
+        endif
+      endfor
+    endfor
+    if !empty(gems)
+      let self._lock_time = time
+      call self.alter_buffer_paths()
+      return gems
     endif
 
     let output = system(prefix.'ruby -C '.s:shellesc(self.path()).' -rubygems -e "require %{bundler}; Bundler.load.specs.map {|s| puts %[#{s.name} #{s.full_gem_path}]}"')
@@ -237,7 +261,7 @@ function! s:buffer(...) abort
   if buffer.getvar('bundler_root') !=# ''
     return buffer
   endif
-  call s:throw('not a Bundler project: '.expand('%:p'))
+  call s:throw('not a Bundler project: '.(a:0 ? a:1 : expand('%')))
 endfunction
 
 function! bundler#buffer(...) abort

@@ -1,57 +1,115 @@
+:sp - open horizontal split
+:vsp - open vertical split
+:tabnew - open a new tab
+:close - close the tab 
+<leader><cr> || :noh - stop highlighting last search
+<leader>bd || :Bclose - close current buffer
+<leader>ba - close all buffers
+<leader>cd - switch to the directory of the open buffer
+<leader>mb - make current window bigger by 10 columns/rows
+<C-w>> - make vertical split bigger by 1
+<C-w>< - make make vertical split smaller by 1
+<C-w>= - make vertical slits the same size
+<leader>mvb || :vertical resize +10 - make vertical split bigger by 10
+<leader>mvs || :vertical resize -10 - make vertical split smaller by 10
+<leader>mhb || :resize +10 - horizontal bigger by 10
+<leader>mhs || :resize -10 - horizontal smaller by 10
+<leader>e - edit the vim config file
+<leader>c - edit the cheatsheet file
+<leader>q - open a scratch buffer
+:Lorem - put in a paragraph of lorem ipsum at the cursor
+<leader>jt - format json using python json.tool
+<leader>b - open the buffer explorer
+<leader>tt - toggle the tagbar
+<leader>tags - basic tag generation using ctags
+
+
 Movement Commands
 --------------------------
+h                        - left
+j                        - down
+k                        - up
+l                        - right
+$ || -                   - go to end of line
+^ || 0                   - go to start of line
+gg                       - go to start of file
+G                        - go to end of file
+H                        - cursor to top of screen
+M                        - cursor to middle of screen
+L                        - cursor to bottom of screen
+:5 || 5G                 - go to line 5
+w                        - next word start
+b                        - previous word start
+e                        - next word end
+ge                       - previous word end
+W                        - next WORD start
+B                        - previous WORD start
+(                        - next sentence
+)                        - previous sentence
+{                        - next paragraph
+}                        - previous paragraph
+n|                       - nth column of current line
+%                        - jump ot matching bracket (),{},[]
+<C-e>                    - scroll up 3 lines
+<C-y>                    - scroll down 3 lines
+<C-f>                    - move up one screen
+<C-b>                    - move down one screen
+m<char>                  - mark current position where <char> is [a..Z]
+'c                       - go to mark
+'.                       - last edited line
+:marks                   - print all marks
+:jumps                   - print all jumps
+n<C-o>                   - go to nth older position in jump list, scroll forward through jump list
+n<C-i>                   - go to nth newer position in jump list, scroll backward through jump list
+g;                       - jump backwards through the changelist
+g,                       - jump forwards through the changelist
+f<char>                  - move forward to first occurence of <char> where <char> is any character
+t<char>                  - move forward before the first occurence of <char> where <char> is any character
+F<char>                  - move backward to first occurence of <char> where <char> is any character
+T<char>                  - move backward to right after the first occurence of <char> where <char> is any character
+;                        - repeat the f,t,F,T command in the forward direction
+,                        - repeat the f,t,F,T command in the backward direction
 
-* h,j,k,l                - left, down, up, right 
-* $, -                   - go to end of line
-* ^, 0                   - go to start of line
-* gg,G                   - start, end of file
-* H,M,L                  - cursor to top, middle, bottom of screen
-* :5, 5G                 - go to line 5
-* w,b,e,ge               - next word start, previous word start, next word end, previous word end
-* (,),{,}                - next, previous sentence, next, previous paragraph
-* n|                     - nth column of current line
-* %                      - jump ot matching bracket (),{},[]
-* <C-e>, <C-y>           - scroll up, down
-* <C-f>, <C-b>           - move up, down one screen at a time
-* mc                     - mark current position where c is [a..Z]
-* `c, 'c                 - go to mark
-* `., '.                 - last edited line
-* :marks                 - print all marks
-* :jumps                 - print all jumps
-* n<C-o>                 - go to nth older position in jump list, scroll forward through jump list
-* n<C-i>                 - go to nth newer position in jump list, scroll backward through jump list
-* g;,g,                  - jump backwards and forwards through the changelist
-* f,t,F,T                - move forward to,before a specified character, move backward to,before a 
-                           specified character(; or , - repeat the command forward or backward)
 
 Insert Commands
 --------------------------
-
-* i,I                    - insert, start of line
-* a,A,ea                 - append, end of line, end of word
-* o,O                    - blank line below, blank line above
-* esc, <C-[>, <C-c>      - exit from insert mode
-* r                      - replace a single character (does not use insert mode)
-* J                      - join line below to the current one (pur number before to join several lines)
-* s                      - delete character and substitute text (add number in front to delete x characters)
-* cw,cc                  - replace word, line C - rewrite to end of line
-* x,X                    - delete character right, left
-* dw,dd                  - delete word, line (cut)
-* yw, yy                 - copy word, line (number in front for multiple) (copy)
-* p,P                    - paste after, before
-* :x,yd                  - delete lines x through y
-* "ayy, "ap              - copy line into register a, paste
-* ~,g~m                  - switch case of char, movement command
-* gum, gUm               - lowercase, uppercase text of movement command
-* <C-w>                  - backspace over a word while in insert mode
-* <C-o>                  - enter normal mode for one command while in insert mode
-* <C-u>                  - delete to beginning of indent while in insert mode
-* <C-x> <C-l>            - line completion while in insert mode
-* <C-y>                  - copy letter above the cursor
-* <C-e>                  - copy letter below the cursor
-* <C-x> <C-o>            - omnicompletion
-* < C-r" >               - paste from default register in insert mode (probably can substitute the " 
-                           to any other register to paste from that one)
+i - enter insert mode before cursor
+I - go to start of line and enter insert mode
+a - enter insert mode after cursor
+A - go to end of line and enter insert mode
+ea - enter insert mode at the end of current word
+o - blank line below
+O - blank line above
+<ESC> || <C-c> || <C-[> - exit insert mode
+r - replace character under cursor
+J - join line below to the current one
+s - delete character and substitute text
+cw - replace from cursor to end of word
+cc - replace from cursor to end of line
+x - delete char under cursor
+X - delete char before cursor
+dw - delete from cursor to end of word
+dd - delete current line
+yw - copy from cursor to end of word
+yy - copy current line
+p - paste after
+P - paste before
+:x,yd                  - delete lines x through y
+"ayy - copy line into register a
+"ap - paste from register a
+~ - switch case of char under cursor
+g~<move command> - switch case of movement command e.g. g~w for word
+gu<move command> - lowercase text of movement command
+gU<move command> - uppercase text of movement command
+<C-w>                  - backspace over a word while in insert mode
+<C-o>                  - enter normal mode for one command while in insert mode
+<C-u>                  - delete to beginning of indent while in insert mode
+<C-x><C-l>             - line completion while in insert mode
+<C-y>                  - copy letter above the cursor
+<C-e>                  - copy letter below the cursor
+<C-x><C-o>             - omnicompletion
+< C-r">                - paste from default register in insert mode (probably can substitute the " 
+                         to any other register to paste from that one)
 
 Search/Replace Commands
 ---------------------------
@@ -306,9 +364,6 @@ vim-coffee-script
 * :[range]CoffeeCompile [vertical] [{win-size}] - Shows how the current file or [range] is compiled to JavaScript. 
 * :CoffeeCompile {watch} [vertical] [{win-size}] - The watch mode of :CoffeeCompile emulates the "Try CoffeeScript" live preview on the CoffeeScript web site. 
 * :[range]CoffeeRun	Compiles the file or [range] and runs the resulting JavaScript, displaying the output.
-
-Specky
---------------------------
 
 vim-rake
 --------------------------

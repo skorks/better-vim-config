@@ -12,37 +12,19 @@ call pathogen#helptags()
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Enable filetype plugin
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-set nocompatible 
+set nocompatible
+
 syntax on "syntax highlighting
 filetype on
 filetype plugin on
 filetype indent on
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" Omni complete functions
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-autocmd FileType python set omnifunc=pythoncomplete#Complete
-autocmd FileType javascript set omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType html set omnifunc=htmlcomplete#CompleteTags
-autocmd FileType css set omnifunc=csscomplete#CompleteCSS
-autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
-autocmd FileType php set omnifunc=phpcomplete#CompletePHP
-autocmd FileType c set omnifunc=ccomplete#Complete
-autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
-autocmd Filetype java set omnifunc=javacomplete#Complete 
-autocmd BufNewFile,BufRead *.html.erb set filetype=html.eruby
-autocmd BufNewFile,BufRead *.god set filetype=ruby
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " General config options
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-set history=5000 "sets how many lines of history VIM has to remember
-set autoread "set to auto read when a file is changed from the outside
-set number "line numbers
-
-" With a map leader it's possible to do extra key combinations like <leader>w saves the current file
+" With a map leader it's possible to do extra key combinations, i.e. it is another control character like Shift or Ctrl
 let mapleader = ","
-let g:mapleader = ","
+let maplocalleader = ","
 
 " Fast editing of the .vimrc and cheetsheet
 if MySys() == "windows"
@@ -55,9 +37,13 @@ elseif MySys() == "linux" || MySys() == "mac"
 endif
 
 " location of the ctags command to stop ctags errors
-if MySys() == "mac"
-  let Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8/bin/ctags'
-endif
+"if MySys() == "mac"
+"  let Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8/bin/ctags'
+"endif
+
+set history=5000 "sets how many lines of history VIM has to remember
+set autoread "set to auto read when a file is changed from the outside
+set number "line numbers
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Set up color scheme, fonts, encoding and file formats
@@ -68,7 +54,8 @@ if has("gui_running")
   set gfn=Monaco:h15
   colorscheme solarized
 else
-  set background=dark
+  set background=light
+  set t_Co=256
 endif
 
 " Set font according to system
@@ -103,28 +90,39 @@ endif
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " VIM UI and other useful stuff
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-set scrolloff=7 " Set 7 lines to the curors - when moving vertical..
-set wildmenu "Turn on WiLd menu (can set wildmode as well to customize completion)
-set ruler "Always show current position
-set cmdheight=2 "The commandbar height
-set ignorecase "Ignore case when searching
-set smartcase " make search case sensitive if there are capital letters
-set hlsearch "Highlight search things
-set incsearch "Make search act like search in modern browsers
-set showmatch "Show matching bracets when text indicator is over them
-set mat=9 "How many tenths of a second to blink
-set hid "Change buffer - without saving, ie able to hide buffers even when there are changes in them
-set magic "Set magic on, for regular expressions
-set timeoutlen=500 "Quick timeouts on key combinations.
-set title " Set xterm title
-set backspace=eol,start,indent " Set backspace config
-set whichwrap+=<,>,h,l " add keys that will allow to wrap to next line
-set shortmess=atI " less verbose message less prompts to press enter
-set showcmd " see what you're actually doing with the keyboard
+set scrolloff=7                   "Set 7 lines to the curors - when moving vertical..
+set wildmenu                      "Turn on WiLd menu (can set wildmode as well to customize completion)
+set wildmode=list:longest,full    "command <Tab> completion, list matches, then longest common part, then all.
+set cmdheight=2                   "The commandbar height
+set ignorecase                    "Ignore case when searching
+set smartcase                     "make search case sensitive if there are capital letters
+set hlsearch                      "Highlight search things
+set incsearch                     "Make search act like search in modern browsers
+set showmatch                     "Show matching bracets when text indicator is over them
+set mat=9                         "How many tenths of a second to blink
+set hid                           "Change buffer - without saving, ie able to hide buffers even when there are changes in them
+set magic                         "Set magic on, for regular expressions
+set timeoutlen=500                "Quick timeouts on key combinations.
+set title                         "Set xterm title
+set backspace=eol,start,indent    "Set backspace config
+set whichwrap+=<,>,h,l            "add keys that will allow to wrap to next line
+set shortmess+=filmnrxoOtT        "less verbose message less prompts to press enter
+set showcmd                       "see what you're actually doing with the keyboard
 set sidescroll=1
-set sidescrolloff=3
+set sidescrolloff=3               " minimum lines to keep above and below cursor
+set scrolljump=5                  " lines to scroll when cursor leaves screen
 set printoptions=paper:letter
 set shortmess+=A
+
+set mouse=a                                        "automatically enable mouse usage
+set viewoptions=folds,options,cursor,unix,slash    "better unix / windows compatibility
+set virtualedit=onemore                            "allow for cursor beyond last character
+set showmode                                       "display the current mode
+set linespace=0                                    "No extra spaces between rows
+set list                                           "show tabs and trailing spaces
+set listchars=tab:,.,trail:.,extends:#,nbsp:.      "chars used to highlight problematic whitespace
+set ruler                                          "Always show current position
+set rulerformat=%30(%=\:b%n%y%m%r%w\ %l,%c%V\ %P%) "a ruler on steroids
 
 " No sound on errors
 set noerrorbells
@@ -134,27 +132,41 @@ set vb t_vb=
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Files and backups
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+set backup                      "switch on backups
+
+if has('persistent_undo')
+  set undofile                  "switch on persistent undo (vim 7.3+)
+  set undolevels=1000           "maximum number of changes that can be undone
+  set undoreload=10000          "maximum number lines to save for undo on a buffer reload
+endif
+
+" Could use * rather than *.*, but I prefer to leave .files unsaved
+au BufWinLeave *.* silent! mkview     "make vim save view (state) (folds, cursor, etc)
+au BufWinEnter *.* silent! loadview   "make vim load view (state) (folds, cursor, etc)
+
 " Auto-backup files and .swp files don't go to pwd
 if MySys() == "windows"
   set backupdir=~\_vimtmp,$TEMP
   set directory=~\_vimtmp,$TEMP
+  set undodir=~\_vimtmp,$TEMP
 elseif MySys() == "linux"
   set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
   set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+  set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 elseif MySys() == "mac"
   set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
   set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+  set undodir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 endif
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Text, tab, indent (can depend on type of file)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-"2 spaces intead of tabs
+" 2 spaces intead of tabs
 set tabstop=2
 set expandtab
 set shiftwidth=2
 set smarttab
-":set softtabstop=4 shiftwidth=4 expandtab - for python code for example
 
 set linebreak
 set textwidth=5000
@@ -162,14 +174,17 @@ set textwidth=5000
 "automatically indent
 set smartindent
 set cindent
-set autoindent "Auto indent
-set wrap "Wrap lines
+set autoindent     "Auto indent
+set wrap           "Wrap lines
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " filetype indents etc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-autocmd FileType c,cpp,javascript,xml,xhtml,html set shiftwidth=2 softtabstop=2
-autocmd FileType java,python set shiftwidth=4 softtabstop=4
+autocmd FileType c,cpp,javascript,xml,xhtml,html set shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType java,python set shiftwidth=4 softtabstop=4 expandtab
+
+autocmd BufNewFile,BufRead *.god set filetype=ruby
+autocmd BufNewFile,BufRead *.html.erb set filetype=html.eruby
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Convenience options
@@ -186,6 +201,12 @@ nnoremap <C-e> 5<C-e>
 nnoremap <C-y> 5<C-y>
 vnoremap <C-e> 5<C-e>
 vnoremap <C-y> 5<C-y>
+
+" Easier moving in tabs and windows
+map <C-J> <C-W>j<C-W>_
+map <C-K> <C-W>k<C-W>_
+map <C-L> <C-W>l<C-W>_
+map <C-H> <C-W>h<C-W>_
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>
@@ -228,29 +249,34 @@ nnoremap <F6> :set invpaste paste?<CR>
 set pastetoggle=<F6>
 set showmode
 
-" causes the dictionary words to always be included in the possible completions
-if MySys() == "linux"
-  :set dictionary-=/usr/share/dict/words dictionary+=/usr/share/dict/words
-  :set complete-=k complete+=k
-endif
-
 " make a window bigger of smaller
-map <leader>mb 20<C-W>>
-map <leader>ms 20<C-W><
+map <leader>mvb :vertical resize +10<CR>
+map <leader>mvs :vertical resize -10<CR>
+map <leader>mhb :resize +10<CR>
+map <leader>mhs :resize -10<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Statusline
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" Always hide the statusline
-set laststatus=2
+if has('statusline')
+  set laststatus=2
+
+  " Broken down into easily includeable segments
+  set statusline=%<%f\    " Filename
+  set statusline+=%w%h%m%r " Options
+  set statusline+=%{fugitive#statusline()} "  Git Hotness
+  set statusline+=\ [%{&ff}/%Y]            " filetype
+  set statusline+=\ [%{getcwd()}]          " current dir
+  set statusline+=%=%-14.(%l,%c%V%)\ %p%%  " Right aligned file nav info
+endif
 
 " Format the statusline
-set statusline=\ %F%m%r%h%{fugitive#statusline()}\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
+" set statusline=\ %F%m%r%h%{fugitive#statusline()}\ %w\ \ CWD:\ %r%{CurDir()}%h\ \ \ Line:\ %l/%L:%c
 
-function! CurDir()
-    let curdir = substitute(getcwd(), '/', "~/", "g")
-    return curdir
-endfunction
+"function! CurDir()
+"    let curdir = substitute(getcwd(), '/', "~/", "g")
+"    return curdir
+"endfunction
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Command mode related
@@ -347,17 +373,8 @@ map <leader>sp [s
 map <leader>sa zg
 map <leader>s? z=
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" => Vim grep
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated .git'
-if MySys() == "linux"
-  set grepprg=/bin/grep\ -nH
-endif
-
-
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" => MISC
+" => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Remove the Windows ^M - when the encodings gets messed up
 noremap <Leader>m mmHmt:%s/<C-V><cr>//ge<cr>'tzt'm
@@ -382,40 +399,121 @@ command! -nargs=0 Lorem :normal iLorem ipsum dolor sit amet, consectetur
       \ fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
       \ proident, sunt in culpa qui officia deserunt mollit anim id est
       \ laborum
+      
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" => PLUGIN CONFIGS
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" Plugin configs
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" NERDTree 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" => https://github.com/scrooloose/nerdtree.git
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""" 
 map <F2> :NERDTreeToggle<CR>
 map <leader>nf :NERDTreeFind<CR>
 
+let NERDTreeShowBookmarks=1
+let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+let NERDTreeChDirMode=0
+let NERDTreeQuitOnOpen=1
+let NERDTreeShowHidden=1
+ 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" bufExplorer 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-let g:bufExplorerDefaultHelp=0
-let g:bufExplorerShowRelativePath=1
+" => https://github.com/kien/ctrlp.vim.git
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:ctrlp_working_path_mode = 2
+nnoremap <silent> <Leader>t :CtrlP<CR>
+nnoremap <silent> <Leader>tmru :CtrlPMRU<CR>
+nnoremap <silent> <Leader>tmix :CtrlPMixed<CR>
+let g:ctrlp_custom_ignore = {
+    \ 'dir':  '\.git$\|\.hg$\|\.svn$',
+    \ 'file': '\.exe$\|\.so$\|\.dll$' }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" Taglist 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-map <F5> :TlistToggle<cr>
-let Tlist_WinWidth = 50
-let Tlist_Process_File_Always = 1
+" => https://github.com/Shougo/neocomplcache.git & completion in general
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if has("autocmd") && exists("+omnifunc")
+  autocmd Filetype *
+        \if &omnifunc == "" |
+        \setlocal omnifunc=syntaxcomplete#Complete |
+        \endif
+endif
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" OmniCompletion for snipmate 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-let g:acp_behaviorSnipmateLength = 1
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_enable_smart_case = 1
+let g:neocomplcache_enable_camel_case_completion = 1
+let g:neocomplcache_enable_underbar_completion = 1
+let g:neocomplcache_min_syntax_length = 3
+let g:neocomplcache_enable_auto_delimiter = 1
 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" ctags stuff 
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+let g:neocomplcache_max_list = 20
+
+let g:neocomplcache_disable_auto_complete = 0 " should the autocompletion popup come up automatically 0 means yes
+
+" AutoComplPop like behavior.
+let g:neocomplcache_enable_auto_select = 0
+
 if MySys() == "linux"
-  map <F8> :!/usr/bin/ctags -R .<CR>
+  let g:neocomplcache_ctags_program = "/usr/bin/ctags"
+elseif MySys() == "mac"
+  let g:neocomplcache_ctags_program = "/usr/local/Cellar/ctags/5.8/bin/ctags"
+endif
+
+" Define dictionary.
+let g:neocomplcache_dictionary_filetype_lists = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+    \ }
+
+" Define keyword.
+if !exists('g:neocomplcache_keyword_patterns')
+  let g:neocomplcache_keyword_patterns = {}
+endif
+let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
+
+
+" SuperTab like snippets behavior.
+imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
+
+" Plugin key-mappings.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"    "TAB completion.
+inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"   "insert and close popup
+inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
+inoremap <expr><C-y>  neocomplcache#close_popup()
+inoremap <expr><C-e>  neocomplcache#cancel_popup()
+imap <C-k>     <Plug>(neocomplcache_snippets_expand)
+smap <C-k>     <Plug>(neocomplcache_snippets_expand)
+
+
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+autocmd FileType php setlocal omnifunc=phpcomplete#CompletePHP
+autocmd FileType c setlocal omnifunc=ccomplete#Complete
+autocmd FileType ruby,eruby setlocal omnifunc=rubycomplete#Complete
+autocmd Filetype java setlocal omnifunc=javacomplete#Complete 
+
+" Enable heavy omni completion.
+if !exists('g:neocomplcache_omni_patterns')
+    let g:neocomplcache_omni_patterns = {}
+endif
+let g:neocomplcache_omni_patterns.ruby = '[^. *\t]\.\h\w*\|\h\w*::'
+
+"autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+let g:neocomplcache_omni_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
+let g:neocomplcache_omni_patterns.c = '\%(\.\|->\)\h\w*'
+let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" => https://github.com/majutsushi/tagbar.git & ctags in general
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+if MySys() == "linux"
+  map <Leader>tags :!/usr/bin/ctags -R .<CR>
+elseif MySys() == "mac"
+  map <Leader>tags :!/usr/local/Cellar/ctags/5.8/bin/ctags -R .<CR>
 endif
 
 " Fix supertab/endwise incompatibility
@@ -424,32 +522,36 @@ let g:SuperTabCrMapping = 0
 " Open tag under cursor in a new tab
 nmap <C-\> <C-w><C-]><C-w>T
 
-" Conque Shell
-" let g:ConqueTerm_ReadUnfocused = 1 
+nnoremap <silent> <leader>tt :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" syntastic
+" => https://github.com/msanders/snipmate.vim.git
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:acp_behaviorSnipmateLength = 1
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" => https://github.com/markabe/bufexplorer.git
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:bufExplorerDefaultHelp=0
+let g:bufExplorerShowRelativePath=1
+nmap <leader>b :BufExplorer<CR>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" => https://github.com/scrooloose/syntastic.git
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:syntastic_enable_signs=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_enable_signs=1
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" vim-easygrep 
+" => https://github.com/leshill/vim-json.git & json in general
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-set grepprg=ack
-let g:EasyGrepMode=0
-let g:EasyGrepCommand=1
-let g:EasyGrepRecursive=1
-let g:EasyGrepIgnoreCase=1
-let g:EasyGrepHidden=0
-let g:EasyGrepAllOptionsInExplorer=1
-let g:EasyGrepWindow=0
-let g:EasyGrepReplaceWindowMode=0
-let g:EasyGrepOpenWindowOnMatch=1
-let g:EasyGrepEveryMatch=1
-let g:EasyGrepJumpToMatch=0
-let g:EasyGrepInvertWholeWord=0
-let g:EasyGrepFileAssociationsInExplorer=0
-let g:EasyGrepOptionPrefix='<leader>vy'
-let g:EasyGrepReplaceAllPerFile=0
+" => https://github.com/gaving/vim-easygrep.git
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" => https://github.com/sjl/splice.vim.git
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+

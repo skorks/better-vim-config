@@ -44,6 +44,14 @@ is "args" and for the "q" commands is "quickfix".
 ]o                      Go to the file succeeding the current one
                         alphabetically in the current file's directory.
 
+                                                *[n*
+[n                      Go to the previous SCM conflict marker.  Try d[n
+                        inside a conflict.
+
+                                                *]n*
+]n                      Go to the next SCM conflict marker.  Try d]n inside a
+                        conflict.
+
 LINE OPERATIONS                                 *unimpaired-lines*
 
                                                 *[<Space>*
@@ -95,6 +103,16 @@ Mnenomic: encoding always comes before decoding; "[" always comes before "]".
 ]y{motion}              C String decode.
 ]yy
 {Visual}]y
+
+                                                *[Y* *[YY* *v_[Y*
+[Y{motion}              Base64 encode.
+[YY                     foo bar => Zm9vIGJhcg==
+{Visual}[Y
+
+                                                *]Y* *]YY* *v_]Y*
+]Y{motion}              Base64 decode
+]YY                     Input length must be a multiple of 4.
+{Visual}]Y
 
 TODO                                            *unimpaired-todo*
 
