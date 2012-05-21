@@ -420,6 +420,7 @@ let NERDTreeShowHidden=1
 " => https://github.com/kien/ctrlp.vim.git
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:ctrlp_working_path_mode = 2
+let g:ctrlp_map = '<Leader>t'
 nnoremap <silent> <Leader>t :CtrlP<CR>
 nnoremap <silent> <Leader>tmru :CtrlPMRU<CR>
 nnoremap <silent> <Leader>tmix :CtrlPMixed<CR>
@@ -554,4 +555,3 @@ nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " => https://github.com/sjl/splice.vim.git
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-

@@ -19,9 +19,20 @@
 <leader>q - open a scratch buffer
 :Lorem - put in a paragraph of lorem ipsum at the cursor
 <leader>jt - format json using python json.tool
-<leader>b - open the buffer explorer
+<leader>b || <leader>be - open the buffer explorer
+<leader>bv - open the buffer explorer in vertical split
+<leader>bs - open the buffer explorer in horizontal split
 <leader>tt - toggle the tagbar
 <leader>tags - basic tag generation using ctags
+:bw || :bd - close buffer and window
+:BW || :BD - close buffer but leave window
+<leader>ig - switch on indent guides
+<leader><leader><motion> - switch on easymotion guides (where <motion> is any motion command)
+vir - visually select inside the block
+var - visually select inside and outside of the block
+<c-a> - increment date/time/number
+<c-x> - decrement date/time/number
+:YRShow - show yankring window
 
 
 Movement Commands
