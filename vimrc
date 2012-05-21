@@ -475,8 +475,8 @@ let g:neocomplcache_keyword_patterns['default'] = '\h\w*'
 imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>(neocomplcache_snippets_expand)" : pumvisible() ? "\<C-n>" : "\<TAB>"
 
 " Plugin key-mappings.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"    "TAB completion.
-inoremap <expr><CR>  neocomplcache#smart_close_popup() . "\<CR>"   "insert and close popup
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"             "TAB completion.
+inoremap <expr><CR> pumvisible() ? neocomplcache#smart_close_popup()."\<CR>" : "\<CR>"        "insert and close popup
 inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()

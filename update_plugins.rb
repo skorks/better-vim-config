@@ -68,7 +68,7 @@ if Dir.exists? PLUGINS_DIR
     "https://github.com/sjl/splice.vim.git",
     "https://github.com/kana/vim-textobj-user.git",
     "https://github.com/nelstrom/vim-textobj-rubyblock.git",
-    "https://github.com/bronson/vim-ruby-block-conv.git"
+    "https://github.com/bronson/vim-ruby-block-conv.git",
     "https://github.com/msanders/snipmate.vim.git",
     "https://github.com/bronson/vim-ruby-block-conv.git"
   ].each do |plugin_repo|
