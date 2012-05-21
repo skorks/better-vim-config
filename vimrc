@@ -476,7 +476,7 @@ imap <expr><TAB> neocomplcache#sources#snippets_complete#expandable() ? "\<Plug>
 
 " Plugin key-mappings.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"             "TAB completion.
-inoremap <expr><CR> pumvisible() ? neocomplcache#smart_close_popup()."\<CR>" : "\<CR>"        "insert and close popup
+inoremap <expr>"\<CR>" pumvisible() ? neocomplcache#smart_close_popup()."\<CR>" : "\<CR>"
 inoremap <expr><C-h> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplcache#smart_close_popup()."\<C-h>"
 inoremap <expr><C-y>  neocomplcache#close_popup()
