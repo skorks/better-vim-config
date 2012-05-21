@@ -37,9 +37,9 @@ elseif MySys() == "linux" || MySys() == "mac"
 endif
 
 " location of the ctags command to stop ctags errors
-"if MySys() == "mac"
-"  let Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8/bin/ctags'
-"endif
+if MySys() == "mac"
+  let Tlist_Ctags_Cmd='/usr/local/Cellar/ctags/5.8/bin/ctags'
+endif
 
 set history=5000 "sets how many lines of history VIM has to remember
 set autoread "set to auto read when a file is changed from the outside
@@ -511,9 +511,9 @@ let g:neocomplcache_omni_patterns.cpp = '\h\w*\%(\.\|->\)\h\w*\|\h\w*::'
 " => https://github.com/majutsushi/tagbar.git & ctags in general
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 if MySys() == "linux"
-  map <Leader>tags :!/usr/bin/ctags -R .<CR>
+  map <Leader>tags :!/usr/bin/ctags .<CR>
 elseif MySys() == "mac"
-  map <Leader>tags :!/usr/local/Cellar/ctags/5.8/bin/ctags -R .<CR>
+  map <Leader>tags :!/usr/local/Cellar/ctags/5.8/bin/ctags .<CR>
 endif
 
 " Fix supertab/endwise incompatibility
