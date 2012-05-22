@@ -203,10 +203,10 @@ vnoremap <C-e> 5<C-e>
 vnoremap <C-y> 5<C-y>
 
 " Easier moving in tabs and windows
-map <C-J> <C-W>j<C-W>_
-map <C-K> <C-W>k<C-W>_
-map <C-L> <C-W>l<C-W>_
-map <C-H> <C-W>h<C-W>_
+map <C-J> <C-W>j
+map <C-K> <C-W>k
+map <C-L> <C-W>l
+map <C-H> <C-W>h
 
 " Close the current buffer
 map <leader>bd :Bclose<cr>

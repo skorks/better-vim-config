@@ -33,6 +33,16 @@ var - visually select inside and outside of the block
 <c-a> - increment date/time/number
 <c-x> - decrement date/time/number
 :YRShow - show yankring window
+<C-w>_ - maximize current window/split
+<C-w>+ - increase horizontal split height
+<C-w>- - decrease horizontal split height
+:noautocmd lvimgrep /hello/gj **/* - grep through all files recursively for 'hello' and put results in location list local to current window
+                                   - the noautocmd switches off autocommands during search to make the grep much faster (but will disable highlighting if you jump to first match automatically)
+                                   - the g option will return all matches instead of just one per line
+                                   - the j option will not jump to the first match automatically
+:lw || :lopen - open the location list for current window
+:cw || :copen - open the quickfix list
+
 
 
 Movement Commands
