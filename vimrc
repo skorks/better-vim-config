@@ -374,105 +374,6 @@ map <leader>sa zg
 map <leader>s? z=
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-" => Tabs
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
-"to always show a nice tabline in console vim
-if exists("+showtabline")
-  function! MyTabLine()
-    let s = ''
-    let t = tabpagenr()
-    let i = 1
-    while i <= tabpagenr('$')
-      let buflist = tabpagebuflist(i)
-      let winnr = tabpagewinnr(i)
-      let s .= '%' . i . 'T'
-      let s .= (i == t ? '%1*' : '%2*')
-      let s .= ' '
-      let s .= i . ')'
-      let s .= ' %*'
-      let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
-      let file = bufname(buflist[winnr - 1])
-      let file = fnamemodify(file, ':p:t')
-      if file == ''
-        let file = '[No Name]'
-      endif
-      let s .= file
-      let i = i + 1
-    endwhile
-    let s .= '%T%#TabLineFill#%='
-    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
-    return s
-  endfunction
-  set stal=2
-  set tabline=%!MyTabLine()
-endif
-
-set showtabline=2 " always show tabs in gvim, but not vim
-" set up tab labels with tab number, buffer name, number of windows
-function! GuiTabLabel()
-  let label = ''
-  let bufnrlist = tabpagebuflist(v:lnum)
-  " Add '+' if one of the buffers in the tab page is modified
-  for bufnr in bufnrlist
-    if getbufvar(bufnr, "&modified")
-      let label = '+'
-      break
-    endif
-  endfor
-  " Append the tab number
-  let label .= v:lnum.': '
-  " Append the buffer name
-  let name = bufname(bufnrlist[tabpagewinnr(v:lnum) - 1])
-  if name == ''
-    " give a name to no-name documents
-    if &buftype=='quickfix'
-      let name = '[Quickfix List]'
-    else
-      let name = '[No Name]'
-    endif
-  else
-    " get only the file name
-    let name = fnamemodify(name,":t")
-  endif
-  let label .= name
-  " Append the number of windows in the tab page
-  let wincount = tabpagewinnr(v:lnum, '$')
-  return label . '  [' . wincount . ']'
-endfunction
-set guitablabel=%{GuiTabLabel()}
-
-" set up tab tooltips with every buffer name
-function! GuiTabToolTip()
-  let tip = ''
-  let bufnrlist = tabpagebuflist(v:lnum)
-  for bufnr in bufnrlist
-    " separate buffer entries
-    if tip!=''
-      let tip .= " \n "
-    endif
-    " Add name of buffer
-    let name=bufname(bufnr)
-    if name == ''
-      " give a name to no name documents
-      if getbufvar(bufnr,'&buftype')=='quickfix'
-        let name = '[Quickfix List]'
-      else
-        let name = '[No Name]'
-      endif
-    endif
-    let tip.=name
-    " add modified/modifiable flags
-    if getbufvar(bufnr, "&modified")
-      let tip .= ' [+]'
-    endif
-    if getbufvar(bufnr, "&modifiable")==0
-      let tip .= ' [-]'
-    endif
-  endfor
-  return tip
-endfunction
-set guitabtooltip=%{GuiTabToolTip()}
-"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " => Misc
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " Remove the Windows ^M - when the encodings gets messed up
@@ -488,6 +389,7 @@ func! DeleteTrailingWS()
   exe "normal `z"
 endfunc
 autocmd BufWrite *.py :call DeleteTrailingWS()
+autocmd BufWrite *.rb :call DeleteTrailingWS()
 
 "define :Lorem command to dump in a paragraph of lorem ipsum
 command! -nargs=0 Lorem :normal iLorem ipsum dolor sit amet, consectetur
@@ -512,7 +414,7 @@ map <leader>nf :NERDTreeFind<CR>
 let NERDTreeShowBookmarks=1
 let NERDTreeIgnore=['\.pyc', '\~$', '\.swo$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
 let NERDTreeChDirMode=0
-let NERDTreeQuitOnOpen=1
+let NERDTreeQuitOnOpen=0
 let NERDTreeShowHidden=1
  
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
@@ -543,6 +445,7 @@ let g:neocomplcache_enable_camel_case_completion = 1
 let g:neocomplcache_enable_underbar_completion = 1
 let g:neocomplcache_min_syntax_length = 3
 let g:neocomplcache_enable_auto_delimiter = 1
+let g:neocomplcache_enable_prefetch = 1
 
 let g:neocomplcache_max_list = 20
 
@@ -634,6 +537,8 @@ let g:acp_behaviorSnipmateLength = 1
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:bufExplorerDefaultHelp=0
 let g:bufExplorerShowRelativePath=1
+let g:bufExplorerShowTabBuffer=0
+let g:bufExplorerSplitOutPathName=0
 nmap <leader>b :BufExplorer<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
@@ -654,3 +559,124 @@ nmap <leader>jt <Esc>:%!python -m json.tool<CR><Esc>:set filetype=json<CR>
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
 " => https://github.com/sjl/splice.vim.git
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+" => Tabs (still need to work on this it doesn't quite work properly yet)
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""  
+"to always show a nice tabline in console vim
+if exists("+showtabline")
+  function! MyTabLine()
+    let s = ''
+    let t = tabpagenr()
+    let i = 1
+    while i <= tabpagenr('$')
+      let buflist = tabpagebuflist(i)
+      let winnr = tabpagewinnr(i)
+      let s .= '%' . i . 'T'
+      let s .= (i == t ? '%1*' : '%2*')
+      let s .= ' '
+      let s .= i . ')'
+      let s .= ' %*'
+      let s .= (i == t ? '%#TabLineSel#' : '%#TabLine#')
+      let file = bufname(buflist[winnr - 1])
+      let file = fnamemodify(file, ':p:t')
+      if file == ''
+        let file = '[No Name]'
+      endif
+      let s .= file
+      let i = i + 1
+    endwhile
+    let s .= '%T%#TabLineFill#%='
+    let s .= (tabpagenr('$') > 1 ? '%999XX' : 'X')
+    return s
+  endfunction
+  set stal=2
+  set tabline=%!MyTabLine()
+endif
+
+set showtabline=2 " always show tabs in gvim, but not vim
+" set up tab labels with tab number, buffer name, number of windows
+function! GuiTabLabel()
+  let label = ''
+  let bufnrlist = tabpagebuflist(v:lnum)
+  " Add '+' if one of the buffers in the tab page is modified
+  for bufnr in bufnrlist
+    if getbufvar(bufnr, "&modified")
+      let label = '+'
+      break
+    endif
+  endfor
+  " Append the tab number
+  let label .= v:lnum.': '
+  " Append the buffer name
+  let name = bufname(bufnrlist[tabpagewinnr(v:lnum) - 1])
+  if name == ''
+    " give a name to no-name documents
+    if &buftype=='quickfix'
+      let name = '[Quickfix List]'
+    else
+      let name = '[No Name]'
+    endif
+  else
+    " get only the file name
+    let name = fnamemodify(name,":t")
+  endif
+  let label .= name
+  " Append the number of windows in the tab page
+  let wincount = tabpagewinnr(v:lnum, '$')
+  return label . '  [' . wincount . ']'
+endfunction
+"run this command when we enter vim to make sure the guilabel is actually set
+"vim loads the vimrc file before it loads the plugins, 
+"http://stackoverflow.com/questions/6821033/vim-how-to-run-a-command-immediately-when-starting-vim
+"and the plugins seem to override this setting or something if we pull this out into a plugin it will need to be
+"an after plugin but the autocommand based on event also works
+autocmd VimEnter * set guitablabel=%{GuiTabLabel()} "run this command when we enter vim to make sure the guilabel is set
+
+" set up tab tooltips with every buffer name
+function! GuiTabToolTip()
+  let tip = ''
+  let bufnrlist = tabpagebuflist(v:lnum)
+  for bufnr in bufnrlist
+    " separate buffer entries
+    if tip!=''
+      let tip .= " \n "
+    endif
+    " Add name of buffer
+    let name=bufname(bufnr)
+    if name == ''
+      " give a name to no name documents
+      if getbufvar(bufnr,'&buftype')=='quickfix'
+        let name = '[Quickfix List]'
+      else
+        let name = '[No Name]'
+      endif
+    endif
+    let tip.=name
+    " add modified/modifiable flags
+    if getbufvar(bufnr, "&modified")
+      let tip .= ' [+]'
+    endif
+    if getbufvar(bufnr, "&modifiable")==0
+      let tip .= ' [-]'
+    endif
+  endfor
+  return tip
+endfunction
+set guitabtooltip=%{GuiTabToolTip()}
+
+function! GoToBufferByCount()
+  execute v:count . 'buffer'
+  return ''
+endfunction
+
+nnoremap bb :<C-U>call GoToBufferByCount()<CR>
+
+" someone does a method move motion
+" when i press ; it should repeat the method move motion 
+" if i do another motion other than method move 
+" ; should work as per default for that motion
+"in command mode :exe "grep -r blah" getcwd()
+"getcwd() current working directory of vim instance
+"% current file in command mode
+"%% | %:h current file's directory in command mode
