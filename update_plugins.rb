@@ -14,7 +14,7 @@ def clone_plugin_repo(repo_path)
   end
 end
 
-PLUGINS_DIR = "plugins" 
+PLUGINS_DIR = "plugins"
 if Dir.exists? PLUGINS_DIR
   File.rename(PLUGINS_DIR, "#{PLUGINS_DIR}-old")
   Dir.mkdir(PLUGINS_DIR)
@@ -70,7 +70,8 @@ if Dir.exists? PLUGINS_DIR
     "https://github.com/nelstrom/vim-textobj-rubyblock.git",
     "https://github.com/bronson/vim-ruby-block-conv.git",
     "https://github.com/msanders/snipmate.vim.git",
-    "https://github.com/bronson/vim-ruby-block-conv.git"
+    "https://github.com/bronson/vim-ruby-block-conv.git",
+    "https://github.com/rking/ag.vim"
   ].each do |plugin_repo|
     clone_plugin_repo(plugin_repo)
   end
