@@ -170,6 +170,7 @@ set smarttab
 
 set linebreak
 set textwidth=5000
+set colorcolumn=80
 
 "automatically indent
 set smartindent
