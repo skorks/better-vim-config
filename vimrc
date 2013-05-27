@@ -527,7 +527,7 @@ let g:SuperTabCrMapping = 0
 " Open tag under cursor in a new tab
 nmap <C-\> <C-w><C-]><C-w>T
 
-nnoremap <silent> <leader>tt :TagbarToggle<CR>
+"nnoremap <silent> <leader>tt :TagbarToggle<CR>
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " => https://github.com/msanders/snipmate.vim.git
