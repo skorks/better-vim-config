@@ -4,13 +4,9 @@ import vim
 def focus(winnr):
     vim.command('%dwincmd w' % winnr)
 
-def close(winnr):
-    focus(winnr)
-    vim.command('wincmd c')
-
 def close_all():
-    for winnr in range(len(vim.windows) - 1):
-        close(winnr)
+    focus(1)
+    vim.command('wincmd o')
 
 def split():
     vim.command('wincmd s')

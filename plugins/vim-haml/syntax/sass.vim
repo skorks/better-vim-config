@@ -13,7 +13,7 @@ runtime! syntax/css.vim
 syn case ignore
 
 syn cluster sassCssProperties contains=cssFontProp,cssFontDescriptorProp,cssColorProp,cssTextProp,cssBoxProp,cssGeneratedContentProp,cssPagingProp,cssUIProp,cssRenderProp,cssAuralProp,cssTableProp
-syn cluster sassCssAttributes contains=css.*Attr,scssComment,cssValue.*,cssColor,cssURL,sassDefault,cssImportant,cssError,cssStringQ,cssStringQQ,cssFunction,cssUnicodeEscape,cssRenderProp
+syn cluster sassCssAttributes contains=css.*Attr,sassEndOfLineComment,scssComment,cssValue.*,cssColor,cssURL,sassDefault,cssImportant,cssError,cssStringQ,cssStringQQ,cssFunction,cssUnicodeEscape,cssRenderProp
 
 syn region sassDefinition matchgroup=cssBraces start="{" end="}" contains=TOP
 
@@ -42,6 +42,7 @@ syn match sassMixin  "\%([{};]\s*\|^\s*\)\@<=@mixin"   nextgroup=sassMixinName s
 syn match sassMixing "^\s\+\zs+"        nextgroup=sassMixinName
 syn match sassMixing "\%([{};]\s*\|^\s*\)\@<=@include" nextgroup=sassMixinName skipwhite
 syn match sassExtend "\%([{};]\s*\|^\s*\)\@<=@extend"
+syn match sassPlaceholder "\%([{};]\s*\|^\s*\)\@<=%"   nextgroup=sassMixinName skipwhite
 
 syn match sassFunctionName "[[:alnum:]_-]\+" contained nextgroup=sassCssAttribute
 syn match sassFunctionDecl "\%([{};]\s*\|^\s*\)\@<=@function"   nextgroup=sassFunctionName skipwhite
@@ -57,7 +58,7 @@ syn match sassAmpersand  "&"
 " TODO: Attribute namespaces
 " TODO: Arithmetic (including strings and concatenation)
 
-syn region sassInclude start="@import" end=";\|$" contains=scssComment,cssURL,cssUnicodeEscape,cssMediaType
+syn region sassInclude start="@import" end=";\|$" contains=scssComment,cssStringQ,cssStringQQ,cssURL,cssUnicodeEscape,cssMediaType
 syn region sassDebugLine end=";\|$" matchgroup=sassDebug start="@debug\>" contains=@sassCssAttributes,sassVariable,sassFunction
 syn region sassWarnLine end=";\|$" matchgroup=sassWarn start="@warn\>" contains=@sassCssAttributes,sassVariable,sassFunction
 syn region sassControlLine matchgroup=sassControl start="@\%(if\|else\%(\s\+if\)\=\|while\|for\|each\)\>" end="[{};]\@=\|$" contains=sassFor,@sassCssAttributes,sassVariable,sassFunction
@@ -66,7 +67,9 @@ syn keyword sassFor from to through in contained
 syn keyword sassTodo        FIXME NOTE TODO OPTIMIZE XXX contained
 syn region  sassComment     start="^\z(\s*\)//"  end="^\%(\z1 \)\@!" contains=sassTodo,@Spell
 syn region  sassCssComment  start="^\z(\s*\)/\*" end="^\%(\z1 \)\@!" contains=sassTodo,@Spell
+syn match   sassEndOfLineComment "//.*" contains=sassComment,sassTodo,@Spell
 
+hi def link sassEndOfLineComment        sassComment
 hi def link sassCssComment              sassComment
 hi def link sassComment                 Comment
 hi def link sassDefault                 cssImportant
@@ -74,6 +77,7 @@ hi def link sassVariable                Identifier
 hi def link sassFunction                Function
 hi def link sassMixing                  PreProc
 hi def link sassMixin                   PreProc
+hi def link sassPlaceholder             PreProc
 hi def link sassExtend                  PreProc
 hi def link sassFunctionDecl            PreProc
 hi def link sassReturn                  PreProc

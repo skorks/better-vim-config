@@ -1,3 +1,9 @@
+" Description:      HTML5 and inline SVG indenter
+" Changed By: HT de Beer <H.T.de.Beer@gmail.com>
+" Last Change: 20121013
+"   Added the SVG elements to the list of indenting element. SVG elements
+"   taken from http://www.w3.org/TR/SVG/eltindex.html
+"   
 " Description:        html5 (and html4) indenter
 " Changed By:        Brian Gershon <brian.five@gmail.com>
 " Last Change:        30 Jan 2011
@@ -13,7 +19,7 @@
 " Last Change:        Mo, 05 Jun 2006 22:32:41 CEST
 "                 Restoring 'cpo' and 'ic' added by Bram 2006 May 5
 " Globals:
-" let g:html_indent_tags = ['testag']
+" let g:html_indent_tags = 'html\|p\|time'
 " let g:html_exclude_tags = ['html', 'style', 'script', 'body']
 
 
@@ -21,6 +27,11 @@
 if exists("b:did_indent")
     finish
 endif
+runtime! indent/javascript.vim
+let s:jsindent = &indentexpr
+unlet b:did_indent
+runtime! indent/css.vim
+let s:cssindent = &indentexpr
 let b:did_indent = 1
 
 " [-- local settings (must come before aborting the script) --]
@@ -101,16 +112,14 @@ call add(s:tags, 'article')
 call add(s:tags, 'aside')
 call add(s:tags, 'audio')
 call add(s:tags, 'canvas')
-call add(s:tags, 'command')
 call add(s:tags, 'datalist')
 call add(s:tags, 'details')
-call add(s:tags, 'embed')
 call add(s:tags, 'figcaption')
 call add(s:tags, 'figure')
 call add(s:tags, 'footer')
 call add(s:tags, 'header')
 call add(s:tags, 'hgroup')
-call add(s:tags, 'keygen')
+call add(s:tags, 'main')
 call add(s:tags, 'mark')
 call add(s:tags, 'meter')
 call add(s:tags, 'nav')
@@ -120,11 +129,30 @@ call add(s:tags, 'rp')
 call add(s:tags, 'rt')
 call add(s:tags, 'ruby')
 call add(s:tags, 'section')
-call add(s:tags, 'source')
 call add(s:tags, 'summary')
 call add(s:tags, 'time')
 call add(s:tags, 'video')
 call add(s:tags, 'bdi')
+
+" Common inline used SVG elements
+call add(s:tags, 'clipPath')
+call add(s:tags, 'defs')
+call add(s:tags, 'desc')
+call add(s:tags, 'filter')
+call add(s:tags, 'foreignObject')
+call add(s:tags, 'g')
+call add(s:tags, 'linearGradient')
+call add(s:tags, 'marker')
+call add(s:tags, 'mask')
+call add(s:tags, 'pattern')
+call add(s:tags, 'radialGradient')
+call add(s:tags, 'svg')
+call add(s:tags, 'switch')
+call add(s:tags, 'symbol')
+call add(s:tags, 'text')
+call add(s:tags, 'textPath')
+call add(s:tags, 'tref')
+call add(s:tags, 'tspan')
 
 call add(s:tags, 'html')
 call add(s:tags, 'head')
@@ -142,10 +170,10 @@ if exists('g:html_exclude_tags')
         call remove(s:tags, index(s:tags, tag))
     endfor
 endif
-if exists('g:html_indent_tags')
-    call extend(s:tags, g:html_indent_tags)
-endif
 let s:html_indent_tags = join(s:tags, '\|')
+if exists('g:html_indent_tags')
+    let s:html_indent_tags = s:html_indent_tags.'\|'.g:html_indent_tags
+endif
 
 let s:cpo_save = &cpo
 set cpo-=C
@@ -187,6 +215,7 @@ fun! <SID>HtmlIndentSum(lnum, style)
             endif
         endif
     endif
+
     if '' != &syntax &&
         \ synIDattr(synID(a:lnum, 1, 1), 'name') =~ '\(css\|java\).*' &&
         \ synIDattr(synID(a:lnum, strlen(getline(a:lnum)), 1), 'name')
@@ -223,6 +252,7 @@ fun! HtmlIndentGet(lnum)
 
     " [-- special handling for <javascript>: use cindent --]
     let js = '<script'
+    let jse = '</script>'
 
     """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
     " by Tye Zdrojewski <zdro@yahoo.com>, 05 Jun 2006
@@ -232,14 +262,44 @@ fun! HtmlIndentGet(lnum)
     "      the pair will still match if we are before the beginning of the
     "      pair.
     "
-    if   0 < searchpair(js, '', '</script>', 'nWb')
-    \ && 0 < searchpair(js, '', '</script>', 'nW')
+    if   0 < searchpair(js, '', jse, 'nWb')
+    \ && 0 < searchpair(js, '', jse, 'nW')
         " we're inside javascript
-        if getline(lnum) !~ js && getline(a:lnum) != '</script>'
+        if getline(searchpair(js, '', '</script>', 'nWb')) !~ '<script [^>]*type=["'']\?text\/\(html\|template\)'
+        \ && getline(lnum) !~ js && getline(a:lnum) !~ jse
             if restore_ic == 0
               setlocal noic
             endif
-            return cindent(a:lnum)
+            if s:jsindent == ''
+              return cindent(a:lnum)
+            else
+              execute 'let ind = ' . s:jsindent
+              return ind
+            endif
+        endif
+        if getline(a:lnum) =~ jse
+          return indent(searchpair(js, '', jse, 'nWb'))
+        endif
+    endif
+
+    let css = '<style'
+    let csse = '</style>'
+    if   0 < searchpair(css, '', csse, 'nWb')
+    \ && 0 < searchpair(css, '', csse, 'nW')
+        " we're inside style
+        if getline(lnum) !~ css && getline(a:lnum) !~ csse
+            if restore_ic == 0
+              setlocal noic
+            endif
+            if s:cssindent == ''
+              return cindent(a:lnum)
+            else
+              execute 'let ind = ' . s:cssindent
+              return ind
+            endif
+        endif
+        if getline(a:lnum) =~ csse
+          return indent(searchpair(css, '', csse, 'nWb'))
         endif
     endif
 

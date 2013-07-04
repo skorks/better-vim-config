@@ -56,7 +56,7 @@ in a new buffer to see what is not working.
 NOTE 2: |'timeout'| needs to be set when working in the terminal, otherwise you
 might find weird behaviour with mappings including <Esc> or arrow keys.
 
-NOTE 3: Abbreiations set with |:iabbrev| will not be expanded by delimiters
+NOTE 3: Abbreviations set with |:iabbrev| will not be expanded by delimiters
 used on delimitMate, you should use <C-]> (read |i_CTRL-]|) to expand them on
 the go.
 
@@ -90,6 +90,8 @@ specific file types, see |delimitMateOptionDetails| for examples.
 |'delimitMate_expand_cr'|         Turns on/off the expansion of <CR>.
 
 |'delimitMate_expand_space'|      Turns on/off the expansion of <Space>.
+
+|'delimitMate_jump_expansion'|    Turns on/off jumping over expansions.
 
 |'delimitMate_smart_quotes'|      Turns on/off the "smart quotes" feature.
 
@@ -215,6 +217,17 @@ e.g.: >
         au FileType tcl let b:delimitMate_expand_space = 1
 <
 ------------------------------------------------------------------------------
+                                                *'delimitMate_jump_expansion'*
+                                              *'b:delimitMate_jump_expansion'*
+Values: 1 or 0                                                               ~
+Default: 0                                                                   ~
+This option turns on/off the jumping over <CR> and <Space> expansions when
+inserting closing matchpairs. Read |delimitMateExpansion| for details.
+e.g.: >
+        let delimitMate_jump_expansion = 1
+        au FileType tcl let b:delimitMate_jump_expansion = 1
+<
+------------------------------------------------------------------------------
                                                   *'delimitMate_smart_quotes'*
                                                 *'b:delimitMate_smart_quotes'*
 Values: 1 or 0                                                               ~
@@ -278,9 +291,9 @@ e.g.: >
 Values: String.                                                              ~
 Default: Empty.                                                              ~
 
-The contents of this string will be inserted after the closing matchpair when
-the opening matchapair is inserted at the end of the line. This feature only
-works if the eol marker was inserted on the current insert session.
+The contents of this string will be inserted after the closing matchpair or
+quote when the respective opening matchapair or quote is inserted at the end
+of the line.
 e.g.: >
         au FileType c,perl let b:delimitMate_eol_marker = ";"
 <
@@ -412,11 +425,11 @@ e.g. typing at the "|": >
 ------------------------------------------------------------------------------
    3.4 SMART QUOTES                                   *delimitMateSmartQuotes*
 
-Only one quote will be inserted following a quote, a "\" or, following or
-preceding a keyword character. This should cover closing quotes after a
-string, opening quotes before a string, escaped quotes and apostrophes. Except
-for apostrophes, this feature can be disabled setting the option
-|'delimitMate_smart_quotes'| to 0.
+Only one quote will be inserted following a quote, a "\", following or
+preceding a keyword character, or when the number of quotes in the current
+line is odd. This should cover closing quotes after a string, opening quotes
+before a string, escaped quotes and apostrophes. Except for apostrophes, this
+feature can be disabled setting the option |'delimitMate_smart_quotes'| to 0.
 
 e.g. typing at the "|": >
 

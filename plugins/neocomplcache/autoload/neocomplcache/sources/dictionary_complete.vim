@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: dictionary_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 02 Apr 2012.
+" Last Modified: 28 Apr 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -27,23 +27,25 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! neocomplcache#sources#dictionary_complete#define()"{{{
+" Important variables.
+if !exists('s:dictionary_list')
+  let s:dictionary_list = {}
+  let s:async_dictionary_list = {}
+endif
+
+function! neocomplcache#sources#dictionary_complete#define() "{{{
   return s:source
 endfunction"}}}
 
 let s:source = {
       \ 'name' : 'dictionary_complete',
-      \ 'kind' : 'plugin',
+      \ 'kind' : 'keyword',
+      \ 'mark' : '[D]',
+      \ 'rank' : 4,
       \}
 
-function! s:source.initialize()"{{{
-  " Initialize.
-  let s:dictionary_list = {}
-  let s:completion_length =
-        \ neocomplcache#get_auto_completion_length('dictionary_complete')
-  let s:async_dictionary_list = {}
-
-  " Initialize dictionary."{{{
+function! s:source.initialize() "{{{
+  " Initialize dictionary. "{{{
   if !exists('g:neocomplcache_dictionary_filetype_lists')
     let g:neocomplcache_dictionary_filetype_lists = {}
   endif
@@ -52,7 +54,7 @@ function! s:source.initialize()"{{{
   endif
   "}}}
 
-  " Initialize dictionary completion pattern."{{{
+  " Initialize dictionary completion pattern. "{{{
   if !exists('g:neocomplcache_dictionary_patterns')
     let g:neocomplcache_dictionary_patterns = {}
   endif
@@ -60,13 +62,6 @@ function! s:source.initialize()"{{{
 
   " Set caching event.
   autocmd neocomplcache FileType * call s:caching()
-
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_source_rank,
-        \ 'dictionary_complete', 4)
-
-  " Add command.
-  command! -nargs=? -complete=customlist,neocomplcache#filetype_complete
-        \ NeoComplCacheCachingDictionary call s:recaching(<q-args>)
 
   " Create cache directory.
   if !isdirectory(neocomplcache#get_temporary_directory() . '/dictionary_cache')
@@ -77,34 +72,33 @@ function! s:source.initialize()"{{{
   call s:caching()
 endfunction"}}}
 
-function! s:source.finalize()"{{{
+function! s:source.finalize() "{{{
   delcommand NeoComplCacheCachingDictionary
 endfunction"}}}
 
-function! s:source.get_keyword_list(cur_keyword_str)"{{{
+function! s:source.get_keyword_list(complete_str) "{{{
   let list = []
 
-  let filetype = neocomplcache#is_text_mode() ? 'text' : neocomplcache#get_context_filetype()
-  if neocomplcache#is_text_mode() && !has_key(s:dictionary_list, 'text')
+  let filetype = neocomplcache#is_text_mode() ?
+        \ 'text' : neocomplcache#get_context_filetype()
+  if !has_key(s:dictionary_list, filetype)
     " Caching.
     call s:caching()
   endif
 
   for ft in neocomplcache#get_source_filetypes(filetype)
     call neocomplcache#cache#check_cache('dictionary_cache', ft,
-          \ s:async_dictionary_list,
-          \ s:dictionary_list, s:completion_length)
+          \ s:async_dictionary_list, s:dictionary_list, 1)
 
     for dict in neocomplcache#get_sources_list(s:dictionary_list, ft)
-      let list += neocomplcache#dictionary_filter(dict,
-            \ a:cur_keyword_str, s:completion_length)
+      let list += neocomplcache#dictionary_filter(dict, a:complete_str)
     endfor
   endfor
 
   return list
 endfunction"}}}
 
-function! s:caching()"{{{
+function! s:caching() "{{{
   if !bufloaded(bufnr('%'))
     return
   endif
@@ -114,7 +108,7 @@ function! s:caching()"{{{
   for filetype in neocomplcache#get_source_filetypes(key)
     if !has_key(s:dictionary_list, filetype)
           \ && !has_key(s:async_dictionary_list, filetype)
-      call s:recaching(filetype)
+      call neocomplcache#sources#dictionary_complete#recaching(filetype)
     endif
   endfor
 endfunction"}}}
@@ -131,36 +125,38 @@ function! s:caching_dictionary(filetype)
     call delete(s:async_dictionary_list[filetype].cache_name)
   endif
 
-  call s:recaching(filetype)
+  call neocomplcache#sources#dictionary_complete#recaching(filetype)
 endfunction
-function! s:recaching(filetype)"{{{
+function! neocomplcache#sources#dictionary_complete#recaching(filetype) "{{{
+  if !exists('g:neocomplcache_dictionary_filetype_lists')
+    call neocomplcache#initialize()
+  endif
+
   let filetype = a:filetype
   if filetype == ''
     let filetype = neocomplcache#get_context_filetype(1)
   endif
 
   " Caching.
-  let dictionaries = ''
-
-  if has_key(g:neocomplcache_dictionary_filetype_lists, filetype)
-    let dictionaries =
-          \ g:neocomplcache_dictionary_filetype_lists[filetype]
-  endif
+  let dictionaries = get(
+        \ g:neocomplcache_dictionary_filetype_lists, filetype, '')
 
   if dictionaries == ''
-    let dictionaries = &dictionary
-    if filetype != &filetype && &l:dictionary != ''
-      let dictionaries .= ',' . &l:dictionary
+    if filetype != &filetype &&
+          \ &l:dictionary != '' && &l:dictionary !=# &g:dictionary
+      let dictionaries .= &l:dictionary
     endif
   endif
 
   let s:async_dictionary_list[filetype] = []
 
-  let pattern = has_key(g:neocomplcache_dictionary_patterns, filetype) ?
-        \ g:neocomplcache_dictionary_patterns[filetype] :
-        \ neocomplcache#get_keyword_pattern(filetype)
+  let pattern = get(g:neocomplcache_dictionary_patterns, filetype,
+        \ neocomplcache#get_keyword_pattern(filetype))
   for dictionary in split(dictionaries, ',')
+    let dictionary = neocomplcache#util#substitute_path_separator(
+          \ fnamemodify(dictionary, ':p'))
     if filereadable(dictionary)
+      call neocomplcache#print_debug('Caching dictionary: ' . dictionary)
       call add(s:async_dictionary_list[filetype], {
             \ 'filename' : dictionary,
             \ 'cachename' : neocomplcache#cache#async_load_from_file(

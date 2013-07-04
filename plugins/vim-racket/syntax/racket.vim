@@ -15,7 +15,7 @@ endif
 syn case ignore
 
 " Highlight unmatched parens
-syn match racketError ,[])],
+syn match racketError ,[]})],
 
 if version < 600
   set iskeyword=33,35-39,42-58,60-90,94,95,97-122,126,_
@@ -36,6 +36,7 @@ syn keyword racketSyntax if cond and or case define
 syn keyword racketSyntax define define-values define-syntax define-syntaxes
 syn keyword racketSyntax define-for-syntax define-require-syntax define-provide-syntax
 syn keyword racketSyntax define-syntax-rule
+syn keyword racketSyntax define-record-type
 syn keyword racketSyntax begin begin0 begin-for-syntax
 syn keyword racketSyntax when unless
 syn keyword racketSyntax set! set!-values
@@ -54,6 +55,22 @@ syn keyword racketSyntax define-package open-package package-begin
 syn keyword racketSyntax define* define*-values define*-syntax define*-syntaxes open*-package
 syn keyword racketSyntax package? package-exported-identifiers package-original-identifiers
 syn keyword racketSyntax block #%stratified-body
+
+" 12.5 Writing
+syn keyword racketSyntax write display displayln print
+syn keyword racketSyntax fprintf printf eprintf format
+syn keyword racketSyntax print-pair-curly-braces print-mpair-curly-braces print-unreadable
+syn keyword racketSyntax print-graph print-struct print-box print-vector-length print-hash-table
+syn keyword racketSyntax print-boolean-long-form print-reader-abbreviations print-as-expression print-syntax-width
+syn keyword racketSyntax current-write-relative-directory port-write-handler port-display-handler
+syn keyword racketSyntax port-print-handler global-port-print-handler
+
+
+" 13.7 Custodians
+syn keyword racketSyntax custodian? custodian-memory-accounting-available? custodian-box?
+syn keyword racketSyntax make-custodian custodian-shutdown-all current-custodian custodian-managed-list
+syn keyword racketSyntax custodian-require-memory custodian-limit-memory
+syn keyword racketSyntax make-custodian-box custodian-box-value
 
 " lambda sign
 syn match racketSyntax /\<[\u03bb]\>/
@@ -304,6 +321,40 @@ syn keyword racketFunc prefab-struct-key make-prefab-struct prefab-key->struct-t
 syn keyword racketFunc struct-info? check-struct-info? make-struct-info extract-struct-info
 syn keyword racketFunc struct-auto-info? struct-auto-info-lists
 
+" 5.1 Creating Interfaces
+syn keyword racketFunc interface interface*
+
+" 5.2 Creating Classes
+syn keyword racketFunc class* class inspect
+syn keyword racketFunc init init-field field inherit field init-rest
+syn keyword racketFunc public public* pubment pubment* public-final public-final*
+syn keyword racketFunc override override* overment overment* override-final override-final*
+syn keyword racketFunc augride augride* augment augment* augment-final augment-final*
+syn keyword racketFunc abstract inherit inherit/super inherit/inner
+syn keyword racketFunc rename-inner rename-super
+syn keyword racketFunc define/public define/pubment define/public-final
+syn keyword racketFunc define/override define/overment define/override-final
+syn keyword racketFunc define/augride define/augment define/augment-final
+syn keyword racketFunc private* define/private
+
+" 5.2.3 Methods
+syn keyword racketFunc class/derived
+syn keyword racketFunc super inner define-local-member-name define-member-name
+syn keyword racketFunc member-name-key generate-member-key member-name-key?
+syn keyword racketFunc member-name-key=? member-name-key-hash-code
+
+" 5.3 Creating Objects
+syn keyword racketFunc make-object instantiate new
+syn keyword racketFunc super-make-object super-instantiate super-new
+
+"5.4 Field and Method Access
+syn keyword racketFunc method-id send send/apply send/keyword-apply dynamic-send send*
+syn keyword racketFunc get-field set-field! field-bound?
+syn keyword racketFunc class-field-accessor class-field-mutator
+
+"5.4.3 Generics
+syn keyword racketFunc generic send-generic make-generic
+
 " 14.1.1 Manipulating Paths
 syn keyword racketFunc path? path-string? path-for-some-system? string->path path->string path->bytes
 syn keyword racketFunc string->path-element bytes->path-element path-element->string path-element->bytes
@@ -318,6 +369,8 @@ syn keyword racketFunc path-replace-suffix path-add-suffix
 syn keyword racketFunc explode-path file-name-from-path filename-extension find-relative-path normalize-path
 syn keyword racketFunc path-element? path-only simple-form-path some-simple-path->string string->some-system-path
 
+
+
 syn match racketDelimiter !\<\.\>!
 
 syn match racketSymbol    ,\k+,  contained
@@ -331,6 +384,8 @@ syn match racketConstant  ,\<<\k\+>\>,
 
 syn region racketQuotedStruc start="("rs=s+1 end=")"re=e-1     contains=@racketQuotedStuff,@racketQuotedOrNormal contained
 syn region racketQuotedStruc start="#("rs=s+2 end=")"re=e-1    contains=@racketQuotedStuff,@racketQuotedOrNormal contained
+syn region racketQuotedStruc start="{"rs=s+1 end="}"re=e-1   contains=@racketQuotedStuff,@racketQuotedOrNormal contained
+syn region racketQuotedStruc start="#{"rs=s+2 end="}"re=e-1  contains=@racketQuotedStuff,@racketQuotedOrNormal contained
 syn region racketQuotedStruc start="\["rs=s+1 end="\]"re=e-1   contains=@racketQuotedStuff,@racketQuotedOrNormal contained
 syn region racketQuotedStruc start="#\["rs=s+2 end="\]"re=e-1  contains=@racketQuotedStuff,@racketQuotedOrNormal contained
 
@@ -339,7 +394,8 @@ syn cluster racketQuotedStuff  add=racketQuotedStruc
 " Non-quoted lists, and strings
 syn region racketStruc matchgroup=Delimiter start="("rs=s+1 matchgroup=Delimiter end=")"re=e-1 contains=@racketNormal
 syn region racketStruc matchgroup=Delimiter start="#("rs=s+2 matchgroup=Delimiter end=")"re=e-1 contains=@racketNormal
-
+syn region racketStruc matchgroup=Delimiter start="{"rs=s+1 matchgroup=Delimiter end="}"re=e-1 contains=@racketNormal
+syn region racketStruc matchgroup=Delimiter start="#{"rs=s+2 matchgroup=Delimiter end="}"re=e-1 contains=@racketNormal
 syn region racketStruc matchgroup=Delimiter start="\["rs=s+1 matchgroup=Delimiter end="\]"re=e-1 contains=@racketNormal
 syn region racketStruc matchgroup=Delimiter start="#\["rs=s+2 matchgroup=Delimiter end="\]"re=e-1 contains=@racketNormal
 
@@ -395,6 +451,7 @@ syn match racketNumber    "\<\(#[xdobie]\)\{0,2}[-+]\(inf\|nan\)\.[0f]@[-+]\(inf
 syn keyword racketBoolean  #t #f #true #false #T #F
 
 syn match racketError   "\<#\\\k*\>"
+
 syn match racketChar    "\<#\\.\>"
 syn match racketChar    "\<#\\space\>"
 syn match racketChar    "\<#\\newline\>"
@@ -411,7 +468,7 @@ syn match racketChar    "\<#\\x[0-9a-f]\{1,2}\>"
 syn match racketChar    "\<#\\u[0-9a-f]\{1,6}\>"
 
 syn cluster racketNormal  add=racketNumber,racketBoolean,racketChar
-syn cluster racketQuotedOrNormal  add=racketNumber,racketBoolean,racketChar
+syn cluster racketQuotedOrNormal  add=racketNumber,racketBoolean
 
 " Command-line parsing
 syn keyword racketExtFunc command-line current-command-line-arguments once-any help-labels multi once-each
@@ -421,11 +478,10 @@ syn match racketExtSyntax "#:\k\+"
 
 syn cluster racketNormal  add=racketExtFunc,racketExtSyntax
 
-
 " syntax quoting, unquoting and quasiquotation
-syn region racketQuoted matchgroup=Delimiter start="['`]"rs=s+1 end=![ \t()\[\]";]!re=e-1,me=e-1 contains=@racketQuotedStuff,@racketQuotedOrNormal
-syn region racketQuoted matchgroup=Delimiter start="['`]("rs=s+2 matchgroup=Delimiter end=")"re=e-1 contains=@racketQuotedStuff,@racketQuotedOrNormal
-syn region racketQuoted matchgroup=Delimiter start="['`]#("rs=s+3 matchgroup=Delimiter end=")"re=e-1 contains=@racketQuotedStuff,@racketQuotedOrNormal
+syn region racketQuoted matchgroup=Delimiter start="['`]" end=![ \t()\[\]";]!me=e-1 contains=ALLBUT,@racketQuotedStuff,@racketQuotedOrNormal
+syn region racketQuoted matchgroup=Delimiter start="['`](" matchgroup=Delimiter end=")" contains=ALLBUT,@racketQuotedStuff,@racketQuotedOrNormal
+syn region racketQuoted matchgroup=Delimiter start="['`]#(" matchgroup=Delimiter end=")" contains=ALLBUT,@racketQuotedStuff,@racketQuotedOrNormal
 
 syn region racketUnquote matchgroup=Delimiter start="\<#,"rs=s+2 end=![ \t\[\]()";]!re=e-1,me=e-1 contained contains=@racketNormal
 syn region racketUnquote matchgroup=Delimiter start="\<#,@"rs=s+3 end=![ \t\[\]()";]!re=e-1,me=e-1 contained contains=@racketNormal

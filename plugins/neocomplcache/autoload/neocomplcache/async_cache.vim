@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: async_cache.vim
 " AUTHOR: Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 09 May 2012.
+" Last Modified: 29 May 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -27,85 +27,67 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
-function! s:main(argv)"{{{
+function! s:main(argv) "{{{
   " args: funcname, outputname filename pattern_file_name mark minlen maxfilename
   let [funcname, outputname, filename, pattern_file_name, mark, minlen, maxfilename, fileencoding]
         \ = a:argv
 
   if funcname ==# 'load_from_file'
     let keyword_list = s:load_from_file(
-          \ filename, pattern_file_name, mark, minlen, maxfilename, fileencoding)
+          \ filename, pattern_file_name, mark, minlen, maxfilename, fileencoding, 1)
   else
     let keyword_list = s:load_from_tags(
           \ filename, pattern_file_name, mark, minlen, maxfilename, fileencoding)
   endif
 
-  " Create dictionary key.
-  for keyword in keyword_list
-    if !has_key(keyword, 'abbr')
-      let keyword.abbr = keyword.word
-    endif
-    if !has_key(keyword, 'kind')
-      let keyword.kind = ''
-    endif
-    if !has_key(keyword, 'menu')
-      let keyword.menu = ''
-    endif
-  endfor
+  if empty(keyword_list)
+    return
+  endif
 
   " Output cache.
-  let word_list = []
-  for keyword in keyword_list
-    call add(word_list, printf('%s|||%s|||%s|||%s',
-          \keyword.word, keyword.abbr, keyword.menu, keyword.kind))
-  endfor
-
-  call writefile(word_list, outputname)
+  call writefile([string(keyword_list)], outputname)
 endfunction"}}}
 
-function! s:load_from_file(filename, pattern_file_name, mark, minlen, maxfilename, fileencoding)"{{{
-  if filereadable(a:filename)
-    let lines = map(readfile(a:filename),
-          \ 'iconv(v:val, a:fileencoding, &encoding)')
-  else
+function! s:load_from_file(filename, pattern_file_name, mark, minlen, maxfilename, fileencoding, is_string) "{{{
+  if !filereadable(a:filename)
     " File not found.
     return []
   endif
 
+  let lines = map(readfile(a:filename),
+        \ 's:iconv(v:val, a:fileencoding, &encoding)')
+
   let pattern = get(readfile(a:pattern_file_name), 0, '\h\w*')
 
   let max_lines = len(lines)
-  let menu = '[' . a:mark . '] ' . s:strwidthpart(
-        \ fnamemodify(a:filename, ':t'), a:maxfilename)
 
   let keyword_list = []
   let dup_check = {}
   let keyword_pattern2 = '^\%('.pattern.'\m\)'
 
-  for line in lines"{{{
+  for line in lines "{{{
     let match = match(line, pattern)
-    while match >= 0"{{{
+    while match >= 0 "{{{
       let match_str = matchstr(line, keyword_pattern2, match)
 
       if !has_key(dup_check, match_str) && len(match_str) >= a:minlen
         " Append list.
-        call add(keyword_list, { 'word' : match_str, 'menu' : menu })
+        call add(keyword_list, (a:is_string ?
+              \ match_str : { 'word' : match_str }))
 
         let dup_check[match_str] = 1
       endif
 
-      let match = match(line, pattern, match + len(match_str))
+      let match += len(match_str)
+
+      let match = match(line, pattern, match)
     endwhile"}}}
   endfor"}}}
 
   return keyword_list
 endfunction"}}}
 
-function! s:load_from_tags(filename, pattern_file_name, mark, minlen, maxfilename, fileencoding)"{{{
-  let menu = '[' . a:mark . '] ' . s:strwidthpart(
-        \ fnamemodify(a:filename, ':t'), a:maxfilename)
-
-  let menu_pattern = menu . printf(' %%.%ds', a:maxfilename)
+function! s:load_from_tags(filename, pattern_file_name, mark, minlen, maxfilename, fileencoding) "{{{
   let keyword_lists = []
   let dup_check = {}
 
@@ -120,7 +102,7 @@ function! s:load_from_tags(filename, pattern_file_name, mark, minlen, maxfilenam
       if filereadable(tags_file_name)
         " Use filename.
         let tags_list = map(readfile(tags_file_name),
-              \ 'iconv(v:val, a:fileencoding, &encoding)')
+              \ 's:iconv(v:val, a:fileencoding, &encoding)')
         break
       endif
 
@@ -128,18 +110,22 @@ function! s:load_from_tags(filename, pattern_file_name, mark, minlen, maxfilenam
       let i += 1
     endwhile
   else
+    if !filereadable(a:filename)
+      return []
+    endif
+
     " Use filename.
     let tags_list = map(readfile(a:filename),
-          \ 'iconv(v:val, a:fileencoding, &encoding)')
+          \ 's:iconv(v:val, a:fileencoding, &encoding)')
   endif
 
   if empty(tags_list)
     " File caching.
     return s:load_from_file(a:filename, a:pattern_file_name,
-          \ a:mark, a:minlen, a:maxfilename, a:fileencoding)
+          \ a:mark, a:minlen, a:maxfilename, a:fileencoding, 0)
   endif
 
-  for line in tags_list"{{{
+  for line in tags_list "{{{
     let tag = split(substitute(line, "\<CR>", '', 'g'), '\t', 1)
 
     " Add keywords.
@@ -193,15 +179,13 @@ function! s:load_from_tags(filename, pattern_file_name, mark, minlen, maxfilenam
           \ 'kind' : option['kind'], 'dup' : 1,
           \ }
     if has_key(option, 'struct')
-      let keyword.menu = printf(menu_pattern, option.struct)
+      let keyword.menu = option.struct
     elseif has_key(option, 'class')
-      let keyword.menu = printf(menu_pattern, option.class)
+      let keyword.menu = option.class
     elseif has_key(option, 'enum')
-      let keyword.menu = printf(menu_pattern, option.enum)
+      let keyword.menu = option.enum
     elseif has_key(option, 'union')
-      let keyword.menu = printf(menu_pattern, option.union)
-    else
-      let keyword.menu = menu
+      let keyword.menu = option.union
     endif
 
     call add(keyword_lists, keyword)
@@ -215,7 +199,7 @@ function! s:load_from_tags(filename, pattern_file_name, mark, minlen, maxfilenam
   return keyword_lists
 endfunction"}}}
 
-function! s:truncate(str, width)"{{{
+function! s:truncate(str, width) "{{{
   " Original function is from mattn.
   " http://github.com/mattn/googlereader-vim/tree/master
 
@@ -238,7 +222,7 @@ function! s:truncate(str, width)"{{{
   return ret
 endfunction"}}}
 
-function! s:strwidthpart(str, width)"{{{
+function! s:strwidthpart(str, width) "{{{
   let ret = a:str
   let width = s:wcswidth(a:str)
   while width > a:width
@@ -250,16 +234,24 @@ function! s:strwidthpart(str, width)"{{{
   return ret
 endfunction"}}}
 
+function! s:iconv(expr, from, to)
+  if a:from == '' || a:to == '' || a:from ==? a:to
+    return a:expr
+  endif
+  let result = iconv(a:expr, a:from, a:to)
+  return result != '' ? result : a:expr
+endfunction
+
 if v:version >= 703
   " Use builtin function.
-  function! s:wcswidth(str)"{{{
+  function! s:wcswidth(str) "{{{
     return strdisplaywidth(a:str)
   endfunction"}}}
-  function! s:wcwidth(str)"{{{
+  function! s:wcwidth(str) "{{{
     return strwidth(a:str)
   endfunction"}}}
 else
-  function! s:wcswidth(str)"{{{
+  function! s:wcswidth(str) "{{{
     if a:str =~# '^[\x00-\x7f]*$'
       return strlen(a:str)
     end
@@ -279,7 +271,7 @@ else
   endfunction"}}}
 
   " UTF-8 only.
-  function! s:wcwidth(ucs)"{{{
+  function! s:wcwidth(ucs) "{{{
     let ucs = a:ucs
     if (ucs >= 0x1100
           \  && (ucs <= 0x115f
@@ -312,9 +304,12 @@ if argc() == 8 &&
 
   qall!
 else
-  function! neocomplcache#async_cache#main(argv)"{{{
+  function! neocomplcache#async_cache#main(argv) "{{{
     call s:main(a:argv)
   endfunction"}}}
 endif
+
+let &cpo = s:save_cpo
+unlet s:save_cpo
 
 " vim: foldmethod=marker

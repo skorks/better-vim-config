@@ -1,8 +1,17 @@
-*splice.txt*   A plugin for resolving three-way merge conflicts.
+*splice.txt*   a plugin for resolving three-way merge conflicts.
 
-Splice is a Vim plugin for resolving conflicts during three-way merges.
-It's designed to be used as a merge tool for version control systems like
-Mercurial, Git and Bazaar.
+                 _____       ___            ___       _____    ~
+                / ___/____  / (_)__________(_) \  ____\___ \   ~
+                \__ \/ __ \/ / / ___/ _ \__ \ \ \/ __ \/ __/   ~
+               ___/ / /_/ / / / /__/  __/__\ \ \ \ \_\ \ \___  ~
+              /____/ .___/_/_/\___/\___/ \___/\_\_\___. \____\ ~
+                  /_/                                  \_\     ~
+
+                                  SPLICE ~
+       is a Vim plugin for resolving conflicts during three-way merges.
+
+     It's designed to be used as a merge tool for version control systems
+                       like Mercurial, Git and Bazaar.
 
 ==============================================================================
 CONTENTS                                                     *Splice-contents*
@@ -617,6 +626,11 @@ Fork the project on BitBucket or GitHub and send a pull request.
 ==============================================================================
 9. Changelog                                                 *SpliceChangelog*
 
+v1.0.1
+    * Fix the splice_prefix setting to actually take effect as documented.
+    * Fix the grid view showing the wrong buffers sometimes.
+    * Set the filetype in each buffer.
+    * Fix showing files 2 and result in compare mode.
 v1.0.0
     * Rename to Splice.
     * Change the default prefix to '-' instead of <localleader>.

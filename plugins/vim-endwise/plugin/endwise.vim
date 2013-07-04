@@ -1,6 +1,6 @@
 " endwise.vim - EndWise
 " Author:       Tim Pope <http://tpo.pe/>
-" Version:      1.0
+" Version:      1.1
 " License:      Same as Vim itself.  See :help license
 " GetLatestVimScripts: 2386 1 :AutoInstall: endwise.vim
 
@@ -19,7 +19,7 @@ augroup endwise " {{{1
   autocmd FileType ruby
         \ let b:endwise_addition = '\=submatch(0)=="{" ? "}" : "end"' |
         \ let b:endwise_words = 'module,class,def,if,unless,case,while,until,begin,do' |
-        \ let b:endwise_pattern = '^\s*\zs\%(module\|class\|def\|if\|unless\|case\|while\|until\|for\|\|begin\)\>\%(.*[^.:@$]\<end\>\)\@!\|\<do\ze\%(\s*|.*|\)\=\s*$' |
+        \ let b:endwise_pattern = '^\(.*=\)\?\s*\zs\%(module\|class\|def\|if\|unless\|case\|while\|until\|for\|\|begin\)\>\%(.*[^.:@$]\<end\>\)\@!\|\<do\ze\%(\s*|.*|\)\=\s*$' |
           \ let b:endwise_syngroups = 'rubyModule,rubyClass,rubyDefine,rubyControl,rubyConditional,rubyRepeat'
   autocmd FileType sh,zsh
         \ let b:endwise_addition = '\=submatch(0)=="if" ? "fi" : submatch(0)=="case" ? "esac" : "done"' |
@@ -35,6 +35,11 @@ augroup endwise " {{{1
         \ let b:endwise_addition = 'end&' |
         \ let b:endwise_words = 'fu\%[nction],wh\%[ile],if,for,try' |
         \ let b:endwise_syngroups = 'vimFuncKey,vimNotFunc,vimCommand'
+  autocmd FileType c,cpp,xdefaults
+        \ let b:endwise_addition = '#endif' |
+        \ let b:endwise_words = '#if,#ifdef,#ifndef' |
+        \ let b:endwise_pattern = '^\s*#\%(if\|ifdef\|ifndef\)\s\+.\+$' |
+        \ let b:endwise_syngroups = 'cPreCondit,cCppInWrapper,xdefaultsPreProc'
 augroup END " }}}1
 
 " Maps {{{1
@@ -45,21 +50,24 @@ if maparg("<Plug>DiscretionaryEnd") == ""
   imap    <script> <Plug>DiscretionaryEnd <SID>DiscretionaryEnd
   imap    <script> <Plug>AlwaysEnd        <SID>AlwaysEnd
 endif
-if maparg('<CR>','i') =~# '<C-R>=.*crend(.)<CR>\|<\%(Plug\|SID\)>.*End'
-  " Already mapped
-elseif maparg('<CR>','i') =~ '<CR>'
-  exe "imap <script> <C-X><CR> ".maparg('<CR>','i')."<SID>AlwaysEnd"
-  exe "imap <script> <CR>      ".maparg('<CR>','i')."<SID>DiscretionaryEnd"
-elseif maparg('<CR>','i') =~ '<Plug>delimitMateCR'
-  exe "imap <C-X><CR> ".maparg('<CR>', 'i')."<Plug>AlwaysEnd"
-  exe "imap <CR> ".maparg('<CR>', 'i')."<Plug>DiscretionaryEnd"
-else
-  imap <C-X><CR> <CR><Plug>AlwaysEnd
-  imap <CR>      <CR><Plug>DiscretionaryEnd
-endif
 
-if maparg('<M-o>','i') == ''
-  inoremap <M-o> <C-O>o
+if !exists('g:endwise_no_mappings')
+  if maparg('<CR>','i') =~# '<C-R>=.*crend(.)<CR>\|<\%(Plug\|SNR\|SID\)>.*End'
+    " Already mapped
+  elseif maparg('<CR>','i') =~ '<CR>'
+    exe "imap <script> <C-X><CR> ".maparg('<CR>','i')."<SID>AlwaysEnd"
+    exe "imap <script> <CR>      ".maparg('<CR>','i')."<SID>DiscretionaryEnd"
+  elseif maparg('<CR>','i') =~ '<Plug>delimitMateCR'
+    exe "imap <C-X><CR> ".maparg('<CR>', 'i')."<Plug>AlwaysEnd"
+    exe "imap <CR> ".maparg('<CR>', 'i')."<Plug>DiscretionaryEnd"
+  else
+    imap <C-X><CR> <CR><Plug>AlwaysEnd
+    imap <CR>      <CR><Plug>DiscretionaryEnd
+  endif
+
+  if maparg('<M-o>','i') == ''
+    inoremap <M-o> <C-O>o
+  endif
 endif
 
 " }}}1
@@ -92,7 +100,7 @@ function! s:crend(always)
   let word  = matchstr(getline(lnum),beginpat)
   let endword = substitute(word,'.*',b:endwise_addition,'')
   let y = n.endword."\<C-O>O"
-  let endpat = '\<'.endword.'\>'
+  let endpat = '\w\@<!'.endword.'\w\@!'
   if a:always
     return y
   elseif col <= 0 || synIDattr(synID(lnum,col,1),'name') !~ '^'.synpat.'$'

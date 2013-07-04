@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: tags_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 09 May 2012.
+" Last Modified: 24 Apr 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -27,40 +27,39 @@
 let s:save_cpo = &cpo
 set cpo&vim
 
+" Important variables.
+if !exists('s:tags_list')
+  let s:tags_list = {}
+  let s:async_tags_list = {}
+endif
+
 let s:source = {
       \ 'name' : 'tags_complete',
-      \ 'kind' : 'plugin',
+      \ 'kind' : 'keyword',
       \}
 
-function! s:source.initialize()"{{{
-  " Initialize
-  let s:async_tags_list = {}
-  let s:tags_list = {}
-  let s:completion_length =
-        \ neocomplcache#get_auto_completion_length('tags_complete')
+function! s:source.initialize() "{{{
+  let g:neocomplcache_tags_caching_limit_file_size =
+        \ get(g:, 'neocomplcache_tags_caching_limit_file_size', 500000)
 
   " Create cache directory.
   if !isdirectory(neocomplcache#get_temporary_directory() . '/tags_cache')
     call mkdir(neocomplcache#get_temporary_directory() . '/tags_cache', 'p')
   endif
-
-  command! -nargs=0 -bar
-        \ NeoComplCacheCachingTags
-        \ call s:caching_tags(1)
 endfunction"}}}
 
-function! s:source.finalize()"{{{
+function! s:source.finalize() "{{{
   delcommand NeoComplCacheCachingTags
 endfunction"}}}
 
-function! neocomplcache#sources#tags_complete#define()"{{{
+function! neocomplcache#sources#tags_complete#define() "{{{
   return s:source
 endfunction"}}}
 
-function! s:source.get_keyword_list(cur_keyword_str)"{{{
+function! s:source.get_keyword_list(complete_str) "{{{
   if !has_key(s:async_tags_list, bufnr('%'))
         \ && !has_key(s:tags_list, bufnr('%'))
-    call s:caching_tags(0)
+    call neocomplcache#sources#tags_complete#caching_tags(0)
   endif
 
   if neocomplcache#within_comment()
@@ -68,19 +67,18 @@ function! s:source.get_keyword_list(cur_keyword_str)"{{{
   endif
 
   call neocomplcache#cache#check_cache(
-        \ 'tags_cache', bufnr('%'), s:async_tags_list,
-        \ s:tags_list, s:completion_length)
+        \ 'tags_cache', bufnr('%'), s:async_tags_list, s:tags_list)
 
   if !has_key(s:tags_list, bufnr('%'))
     return []
   endif
   let keyword_list = neocomplcache#dictionary_filter(
-        \ s:tags_list[bufnr('%')], a:cur_keyword_str, s:completion_length)
+        \ s:tags_list[bufnr('%')], a:complete_str)
 
-  return neocomplcache#keyword_filter(keyword_list, a:cur_keyword_str)
+  return neocomplcache#keyword_filter(keyword_list, a:complete_str)
 endfunction"}}}
 
-function! s:initialize_tags(filename)"{{{
+function! s:initialize_tags(filename) "{{{
   " Initialize tags list.
   let ft = &filetype
   if ft == ''
@@ -93,15 +91,16 @@ function! s:initialize_tags(filename)"{{{
         \              'tags_cache', a:filename, ft, 'T', 0)
         \ }
 endfunction"}}}
-function! s:caching_tags(force)"{{{
+function! neocomplcache#sources#tags_complete#caching_tags(force) "{{{
   let bufnumber = bufnr('%')
 
   let s:async_tags_list[bufnumber] = []
-  for tags in map(tagfiles(),
+  for tags in map(filter(tagfiles(), 'getfsize(v:val) > 0'),
         \ "neocomplcache#util#substitute_path_separator(
         \    fnamemodify(v:val, ':p'))")
-    if a:force || getfsize(tags)
-          \         < g:neocomplcache_caching_limit_file_size
+    if tags !~? '/doc/tags\%(-\w\+\)\?$' &&
+          \ (a:force || getfsize(tags)
+          \         < g:neocomplcache_tags_caching_limit_file_size)
       call add(s:async_tags_list[bufnumber],
             \ s:initialize_tags(tags))
     endif

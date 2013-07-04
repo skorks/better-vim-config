@@ -1,7 +1,7 @@
 "=============================================================================
 " FILE: member_complete.vim
 " AUTHOR:  Shougo Matsushita <Shougo.Matsu@gmail.com>
-" Last Modified: 22 Apr 2012.
+" Last Modified: 01 May 2013.
 " License: MIT license  {{{
 "     Permission is hereby granted, free of charge, to any person obtaining
 "     a copy of this software and associated documentation files (the
@@ -34,53 +34,54 @@ endif
 
 let s:source = {
       \ 'name' : 'member_complete',
-      \ 'kind' : 'complfunc',
+      \ 'kind' : 'manual',
+      \ 'mark' : '[M]',
+      \ 'rank' : 5,
+      \ 'min_pattern_length' : 0,
       \}
 
-function! s:source.initialize()"{{{
-  augroup neocomplcache"{{{
+function! s:source.initialize() "{{{
+  augroup neocomplcache "{{{
     " Caching events
     autocmd CursorHold * call s:caching_current_buffer(line('.')-10, line('.')+10)
     autocmd InsertEnter,InsertLeave *
           \ call neocomplcache#sources#member_complete#caching_current_line()
   augroup END"}}}
 
-  " Set rank.
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_source_rank,
-        \ 'member_complete', 5)
-
-  " Set completion length.
-  call neocomplcache#set_completion_length('member_complete', 0)
-
-  " Initialize member prefix patterns."{{{
+  " Initialize member prefix patterns. "{{{
   if !exists('g:neocomplcache_member_prefix_patterns')
     let g:neocomplcache_member_prefix_patterns = {}
   endif
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_member_prefix_patterns,
-        \'c,cpp,objc,objcpp', '\.\|->')
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_member_prefix_patterns,
-        \'perl,php', '->')
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_member_prefix_patterns,
-        \'cs,java,javascript,d,vim,ruby,python,perl6,scala,vb', '\.')
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_member_prefix_patterns,
-        \'lua', '\.\|:')
+  call neocomplcache#util#set_default_dictionary(
+        \ 'g:neocomplcache_member_prefix_patterns',
+        \ 'c,cpp,objc,objcpp', '\.\|->')
+  call neocomplcache#util#set_default_dictionary(
+        \ 'g:neocomplcache_member_prefix_patterns',
+        \ 'perl,php', '->')
+  call neocomplcache#util#set_default_dictionary(
+        \ 'g:neocomplcache_member_prefix_patterns',
+        \ 'cs,java,javascript,d,vim,ruby,python,perl6,scala,vb', '\.')
+  call neocomplcache#util#set_default_dictionary(
+        \ 'g:neocomplcache_member_prefix_patterns',
+        \ 'lua', '\.\|:')
   "}}}
 
-  " Initialize member patterns."{{{
+  " Initialize member patterns. "{{{
   if !exists('g:neocomplcache_member_patterns')
     let g:neocomplcache_member_patterns = {}
   endif
-  call neocomplcache#set_dictionary_helper(g:neocomplcache_member_patterns,
+  call neocomplcache#util#set_default_dictionary(
+        \ 'g:neocomplcache_member_patterns',
         \'default', '\h\w*\%(()\|\[\h\w*\]\)\?')
   "}}}
 
-  " Initialize script variables."{{{
+  " Initialize script variables. "{{{
   let s:member_sources = {}
   "}}}
 endfunction
 "}}}
 
-function! s:source.get_keyword_pos(cur_text)"{{{
+function! s:source.get_keyword_pos(cur_text) "{{{
   " Check member prefix pattern.
   let filetype = neocomplcache#get_context_filetype()
   if !has_key(g:neocomplcache_member_prefix_patterns, filetype)
@@ -88,15 +89,21 @@ function! s:source.get_keyword_pos(cur_text)"{{{
     return -1
   endif
 
-  let cur_keyword_pos = matchend(a:cur_text,
-        \ '\%(' . s:get_member_pattern(filetype) . '\%(' .
-        \ g:neocomplcache_member_prefix_patterns[filetype] . '\m\)\)\+\ze\w*$')
-  return cur_keyword_pos
+  let member = s:get_member_pattern(filetype)
+  let prefix = g:neocomplcache_member_prefix_patterns[filetype]
+  let complete_pos = matchend(a:cur_text,
+        \ '\%(' . member . '\%(' . prefix . '\m\)\)\+\ze\w*$')
+  return complete_pos
 endfunction"}}}
 
-function! s:source.get_complete_words(cur_keyword_pos, cur_keyword_str)"{{{
+function! s:source.get_complete_words(complete_pos, complete_str) "{{{
   " Check member prefix pattern.
   let filetype = neocomplcache#get_context_filetype()
+  if !has_key(g:neocomplcache_member_prefix_patterns, filetype)
+        \ || g:neocomplcache_member_prefix_patterns[filetype] == ''
+    return []
+  endif
+
   let cur_text = neocomplcache#get_cur_text()
   let var_name = matchstr(cur_text,
         \ '\%(' . s:get_member_pattern(filetype) . '\%(' .
@@ -106,18 +113,22 @@ function! s:source.get_complete_words(cur_keyword_pos, cur_keyword_str)"{{{
   endif
 
   return neocomplcache#keyword_filter(
-        \ copy(s:get_member_list(cur_text, var_name)), a:cur_keyword_str)
+        \ copy(s:get_member_list(cur_text, var_name)), a:complete_str)
 endfunction"}}}
 
-function! neocomplcache#sources#member_complete#define()"{{{
+function! neocomplcache#sources#member_complete#define() "{{{
   return s:source
 endfunction"}}}
 
-function! neocomplcache#sources#member_complete#caching_current_line()"{{{
+function! neocomplcache#sources#member_complete#caching_current_line() "{{{
   " Current line caching.
   return s:caching_current_buffer(line('.')-1, line('.')+1)
 endfunction"}}}
-function! s:caching_current_buffer(start, end)"{{{
+function! neocomplcache#sources#member_complete#caching_current_buffer() "{{{
+  " Current line caching.
+  return s:caching_current_buffer(1, line('$'))
+endfunction"}}}
+function! s:caching_current_buffer(start, end) "{{{
   " Current line caching.
 
   if !has_key(s:member_sources, bufnr('%'))
@@ -131,7 +142,6 @@ function! s:caching_current_buffer(start, end)"{{{
   endif
 
   let source = s:member_sources[bufnr('%')]
-  let menu = '[M] member'
   let keyword_pattern =
         \ '\%(' . s:get_member_pattern(filetype) . '\%('
         \ . g:neocomplcache_member_prefix_patterns[filetype]
@@ -144,7 +154,7 @@ function! s:caching_current_buffer(start, end)"{{{
   for line in getline(a:start, a:end)
     let match = match(line, keyword_pattern)
 
-    while match >= 0"{{{
+    while match >= 0 "{{{
       let match_str = matchstr(line, keyword_pattern2, match)
 
       " Next match.
@@ -161,8 +171,7 @@ function! s:caching_current_buffer(start, end)"{{{
           let source.member_cache[var_name] = {}
         endif
         if !has_key(source.member_cache[var_name], member_name)
-          let source.member_cache[var_name][member_name] =
-                \ { 'word' : member_name, 'menu' : menu }
+          let source.member_cache[var_name][member_name] = member_name
         endif
 
         let match_str = matchstr(var_name, keyword_pattern2)
@@ -171,7 +180,7 @@ function! s:caching_current_buffer(start, end)"{{{
   endfor
 endfunction"}}}
 
-function! s:get_member_list(cur_text, var_name)"{{{
+function! s:get_member_list(cur_text, var_name) "{{{
   let keyword_list = []
   for [key, source] in filter(s:get_sources_list(),
         \ 'has_key(v:val[1].member_cache, a:var_name)')
@@ -182,7 +191,7 @@ function! s:get_member_list(cur_text, var_name)"{{{
   return keyword_list
 endfunction"}}}
 
-function! s:get_sources_list()"{{{
+function! s:get_sources_list() "{{{
   let sources_list = []
 
   let filetypes_dict = {}
@@ -193,6 +202,7 @@ function! s:get_sources_list()"{{{
 
   for [key, source] in items(s:member_sources)
     if has_key(filetypes_dict, source.filetype)
+          \ || has_key(filetypes_dict, '_')
           \ || bufnr('%') == key
           \ || (bufname('%') ==# '[Command Line]' && bufnr('#') == key)
       call add(sources_list, [key, source])
@@ -202,7 +212,7 @@ function! s:get_sources_list()"{{{
   return sources_list
 endfunction"}}}
 
-function! s:initialize_source(srcname)"{{{
+function! s:initialize_source(srcname) "{{{
   let path = fnamemodify(bufname(a:srcname), ':p')
   let filename = fnamemodify(path, ':t')
   if filename == ''
@@ -225,7 +235,7 @@ function! s:initialize_source(srcname)"{{{
         \}
 endfunction"}}}
 
-function! s:get_member_pattern(filetype)"{{{
+function! s:get_member_pattern(filetype) "{{{
   return has_key(g:neocomplcache_member_patterns, a:filetype) ?
         \ g:neocomplcache_member_patterns[a:filetype] :
         \ g:neocomplcache_member_patterns['default']

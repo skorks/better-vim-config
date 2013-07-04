@@ -34,7 +34,6 @@ if Dir.exists? PLUGINS_DIR
     "https://github.com/tpope/vim-repeat.git",
     "https://github.com/kien/ctrlp.vim.git",
     "https://github.com/Shougo/neocomplcache.git",
-    "https://github.com/Shougo/neocomplcache-snippets-complete.git",
     "https://github.com/scrooloose/syntastic.git",
     "https://github.com/Lokaltog/vim-easymotion.git",
     "https://github.com/vim-scripts/YankRing.vim.git",
@@ -56,8 +55,8 @@ if Dir.exists? PLUGINS_DIR
     "https://github.com/mattn/zencoding-vim.git",
     "https://github.com/kchmck/vim-coffee-script.git",
     "https://github.com/tsaleh/vim-supertab.git",
-    "https://github.com/gaving/vim-easygrep.git",
-    "https://github.com/mirell/vim-matchit.git",
+    "https://github.com/vim-scripts/EasyGrep.git",
+    "https://github.com/skorks/vim-matchit.git",
     "https://github.com/mutewinter/nginx.vim.git",
     "https://github.com/ChrisYip/Better-CSS-Syntax-for-Vim.git",
     "https://github.com/groenewege/vim-less.git",
@@ -69,11 +68,13 @@ if Dir.exists? PLUGINS_DIR
     "https://github.com/kana/vim-textobj-user.git",
     "https://github.com/nelstrom/vim-textobj-rubyblock.git",
     "https://github.com/bronson/vim-ruby-block-conv.git",
-    "https://github.com/msanders/snipmate.vim.git",
     "https://github.com/bronson/vim-ruby-block-conv.git",
     "https://github.com/rking/ag.vim",
     "https://github.com/terryma/vim-multiple-cursors.git",
-    "https://github.com/slim-template/vim-slim.git"
+    "https://github.com/slim-template/vim-slim.git",
+    "https://github.com/vim-scripts/Align.git",
+    "https://github.com/Shougo/neosnippet.vim.git",
+    "https://github.com/honza/vim-snippets.git"
   ].each do |plugin_repo|
     clone_plugin_repo(plugin_repo)
   end
