@@ -1,6 +1,0 @@
-fun! MySys()
-   return "windows"
-endfun
-set runtimepath=~\_vimruntime,~\_vimruntime\after,$VIMRUNTIME
-source ~\_vimruntime\vimrc
-helptags ~\_vimruntime\doc

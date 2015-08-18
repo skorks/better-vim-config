@@ -1,6 +1,0 @@
-fun! MySys()
-   return "mac"
-endfun
-set runtimepath=~/.vimruntime,~/.vimruntime/after,$VIMRUNTIME
-source ~/.vimruntime/vimrc
-helptags ~/.vimruntime/doc
