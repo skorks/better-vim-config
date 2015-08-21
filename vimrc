@@ -613,6 +613,9 @@ let g:airline#extensions#tabline#fnamemod = ':t'
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 map <leader>bg :BuffergatorToggle<CR>
 let g:buffergator_suppress_keymaps = 1
+let g:buffergator_viewport_split_policy = "B"
+let g:buffergator_autodismiss_on_select = 0
+let g:buffergator_display_regime = "bufname"
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " https://github.com/kien/ctrlp.vim.git
@@ -654,7 +657,11 @@ map <Leader>k <Plug>(easymotion-k)
 let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
+let g:syntastic_check_on_wq = 1
+let g:syntastic_mode_map = {
+        \ "mode": "active",
+        \ "active_filetypes": [],
+        \ "passive_filetypes": ["sass", "scss"] }
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " https://github.com/airblade/vim-gitgutter.git
