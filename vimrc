@@ -663,6 +663,11 @@ let g:syntastic_mode_map = {
         \ "active_filetypes": [],
         \ "passive_filetypes": ["sass", "scss"] }
 
+if has("mac") || has("macunix")
+  let g:syntastic_ruby_mri_exec = '~/.rbenv/shims/ruby'
+endif
+
+
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " https://github.com/airblade/vim-gitgutter.git
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
