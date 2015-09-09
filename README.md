@@ -89,6 +89,48 @@ Pathogen has no automated way to update the plugins. Therefor we've got the `plu
 This way you can keep all the plugins updated, have complete control over everything and store everything in your own git repo. The best of all the worlds.
 
 
+## Linting
+
+To use ES6 linting via eslint:
+
+```
+npm install -g eslint
+npm install -g babel-eslint
+npm install -g eslint-plugin-react
+```
+
+Then configure syntastic:
+
+```
+let g:syntastic_javascript_checkers = ['eslint']
+```
+
+Create a config like this in your project's .eslintrc, or do so globally by placing it in ~/.eslintrc
+
+```
+{
+    "parser": "babel-eslint",
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "settings": {
+        "ecmascript": 6,
+        "jsx": true
+    },
+    "plugins": [
+        "react"
+    ],
+    "rules": {
+        "strict": 0,
+        "quotes": 0,
+        "no-unused-vars": 0,
+        "camelcase": 0,
+        "no-underscore-dangle": 0
+    }
+}
+```
+
 ## Cheatsheet
 
 This is not quite ready yet, but it's coming!

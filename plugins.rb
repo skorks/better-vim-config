@@ -41,10 +41,8 @@ PLUGINS = {
   "html5.vim"                       => "https://github.com/othree/html5.vim.git",
   "vim-cucumber"                    => "https://github.com/tpope/vim-cucumber.git",
   "vim-node"                        => "https://github.com/moll/vim-node.git",
-  "yajs.vim"                        => "https://github.com/othree/yajs.vim.git",
   "vim-json"                        => "https://github.com/elzr/vim-json.git",
   "vim-indent-guides"               => "https://github.com/nathanaelkane/vim-indent-guides.git",
-  "javascript-libraries-syntax.vim" => "https://github.com/othree/javascript-libraries-syntax.vim.git",
   "vim-textobj-user"                => "https://github.com/kana/vim-textobj-user.git",
   "vim-textobj-rubyblock"           => "https://github.com/nelstrom/vim-textobj-rubyblock.git",
   "supertab"                        => "https://github.com/ervandew/supertab.git",
@@ -52,7 +50,11 @@ PLUGINS = {
   "vim-mustache-handlebars"         => "https://github.com/mustache/vim-mustache-handlebars.git",
   "YankRing.vim"                    => "https://github.com/vim-scripts/YankRing.vim.git",
   "undotree"                        => "https://github.com/mbbill/undotree.git",
-  "Dockerfile.vim"                  => "https://github.com/ekalinin/Dockerfile.vim.git"
+  "Dockerfile.vim"                  => "https://github.com/ekalinin/Dockerfile.vim.git",
+  "yajs.vim"                        => "https://github.com/othree/yajs.vim.git",
+  "vim-js-indent"                   => "https://github.com/gavocanov/vim-js-indent.git",
+  "javascript-libraries-syntax.vim" => "https://github.com/othree/javascript-libraries-syntax.vim.git",
+  "vim-jsx"                         => "https://github.com/mxw/vim-jsx.git",
 }
 
 

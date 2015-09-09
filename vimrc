@@ -667,6 +667,7 @@ if has("mac") || has("macunix")
   let g:syntastic_ruby_mri_exec = '~/.rbenv/shims/ruby'
 endif
 
+let g:syntastic_javascript_checkers = ['eslint']
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " https://github.com/airblade/vim-gitgutter.git
@@ -681,7 +682,7 @@ let g:vim_json_syntax_conceal = 0
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " https://github.com/othree/javascript-libraries-syntax.vim.git
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:used_javascript_libs = 'jquery,underscore,backbone'
+let g:used_javascript_libs = 'jquery,underscore,backbone,chai,handlebars,jasmine'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " https://github.com/junegunn/vim-easy-align.git
@@ -697,10 +698,15 @@ nmap ga <Plug>(EasyAlign)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <silent> <Leader>yr :YRShow<CR>
 let g:yankring_history_dir = '~/.vim'
-let g:yankring_replace_n_pkey = '<C-o>'
-let g:yankring_replace_n_nkey = '<C-i>'
+let g:yankring_replace_n_pkey = '<C-\>'
+let g:yankring_replace_n_nkey = '<C-S-\>'
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " https://github.com/mbbill/undotree.git
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <F5> :UndotreeToggle<cr>
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" https://github.com/mxw/vim-jsx.git
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:jsx_ext_required = 0
